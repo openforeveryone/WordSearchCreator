@@ -1,0 +1,13 @@
+[Desktop Entry]
+Comment=Wisiwig word search worksheet creator.
+Exec=/usr/bin/wordsearchcreator
+Icon=wordsearchcreator
+MimeType=application/wordsearch
+Name=Word Search Creator
+GenericName=Word Search Worksheet Creator
+Path=
+StartupNotify=true
+Terminal=false
+TerminalOptions=
+Type=Application
+Categories=Education;Office;

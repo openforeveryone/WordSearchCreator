@@ -1,0 +1,25 @@
+<RCC>
+    <qresource prefix="/icons">
+        <file alias="22x22icon.png">images/22x22icon.png</file>
+        <file alias="build.png">images/build.png</file>
+        <file alias="contents.png">images/contents.png</file>
+        <file alias="editpaste.png">images/editpaste.png</file>
+        <file alias="exit.png">images/exit.png</file>
+        <file alias="exportpdf.png">images/exportpdf.png</file>
+        <file alias="filenew.png">images/filenew.png</file>
+        <file alias="fileopen.png">images/fileopen.png</file>
+        <file alias="fileprint.png">images/fileprint.png</file>
+        <file alias="filesave.png">images/filesave.png</file>
+        <file alias="text.png">images/text.png</file>
+        <file alias="stop.png">images/stop.png</file>
+        <file alias="zoomin.png">images/zoomin.png</file>
+        <file alias="zoomout.png">images/zoomout.png</file>
+        <file alias="512x512icon.png">images/icons.iconset/icon_512x512.png</file>
+    </qresource>
+    <qresource prefix="/images">
+        <file alias="about.png">images/about.png</file>
+    </qresource>
+    <qresource prefix="/template">
+        <file>blank.wsh</file>
+    </qresource>
+</RCC>

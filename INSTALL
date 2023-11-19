@@ -1,0 +1,12 @@
+The easiest way to install is to download the pre-compiled package for your system from: http://www.wordsearchcreator.org/downloads/
+Follow these instructions if there is no package available for your system or you want to make changes to the source.
+
+To compile ensure you have QT 4 development files installed then run:
+qmake
+make
+
+You can then run the application with ./wordsearchcreator or wordsearchcreator.exe .
+
+To install on GNU/Lunux run as root:
+make install
+update-desktop-database

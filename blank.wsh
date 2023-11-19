@@ -1,0 +1,11 @@
+<WSCXML>
+ <Worksheet>
+  <Wordsearch xsize="6" ShowWords="yes" ysize="6" >
+   <Format>
+    <WSFont qtFontDescription="URW Gothic L,20,-1,5,25,0,0,0,0,0" color="#000000" />
+    <TitleFont qtFontDescription="URW Gothic L,28,-1,5,25,0,0,0,0,0" color="#000000" />
+    <WordsFont qtFontDescription="URW Gothic L,20,-1,5,25,0,0,0,0,0" color="#000000" />
+   </Format>
+  </Wordsearch>
+ </Worksheet>
+</WSCXML>

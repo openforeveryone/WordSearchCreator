@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="1024"
+   height="1024"
+   id="svg2"
+   version="1.1"
+   inkscape:version="0.48.3.1 r9886"
+   sodipodi:docname="icon1.svg"
+   inkscape:export-filename="/home/matt/qt4/Word Search Creator 1.1/images/22x22icon.png"
+   inkscape:export-xdpi="1.9335938"
+   inkscape:export-ydpi="1.9335938">
+  <defs
+     id="defs4" />
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="0.50393519"
+     inkscape:cx="-103.42704"
+     inkscape:cy="584.16645"
+     inkscape:document-units="px"
+     inkscape:current-layer="layer1"
+     showgrid="false"
+     inkscape:window-width="1680"
+     inkscape:window-height="995"
+     inkscape:window-x="-2"
+     inkscape:window-y="-3"
+     inkscape:window-maximized="1">
+    <inkscape:grid
+       type="xygrid"
+       id="grid3773"
+       empspacing="5"
+       visible="true"
+       enabled="true"
+       snapvisiblegridlinesonly="true" />
+  </sodipodi:namedview>
+  <metadata
+     id="metadata7">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1"
+     transform="translate(0,-28.362183)">
+    <rect
+       style="fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:32;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       id="rect2985-1"
+       width="496"
+       height="496"
+       x="512"
+       y="540.36218" />
+    <rect
+       style="fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:32;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       id="rect2985-2"
+       width="496"
+       height="496"
+       x="512"
+       y="44.362183" />
+    <rect
+       style="fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:32;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       id="rect2985"
+       width="496"
+       height="496"
+       x="16"
+       y="44.362183" />
+    <flowRoot
+       xml:space="preserve"
+       id="flowRoot3811"
+       style="fill:black;stroke:none;stroke-opacity:1;stroke-width:1px;stroke-linejoin:miter;stroke-linecap:butt;fill-opacity:1;font-family:Sans;font-style:normal;font-weight:normal;font-size:40px;line-height:125%;letter-spacing:0px;word-spacing:0px"><flowRegion
+         id="flowRegion3813"><rect
+           id="rect3815"
+           width="412.7515"
+           height="416.72025"
+           x="63.500229"
+           y="61.574646" /></flowRegion><flowPara
+         id="flowPara3817" /></flowRoot>    <text
+       xml:space="preserve"
+       style="font-size:500px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000080;fill-opacity:1;stroke:none;font-family:Sans"
+       x="60.375"
+       y="458.63718"
+       id="text3827"
+       sodipodi:linespacing="125%"><tspan
+         sodipodi:role="line"
+         id="tspan3829"
+         x="60.375"
+         y="458.63718"
+         style="font-size:450px;font-style:normal;font-variant:normal;font-weight:600;font-stretch:normal;fill:#000080;font-family:URW Gothic L;-inkscape-font-specification:URW Gothic L Semi-Bold">W</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:500px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000080;fill-opacity:1;stroke:none;font-family:Sans"
+       x="645.92499"
+       y="458.63718"
+       id="text3827-8"
+       sodipodi:linespacing="125%"><tspan
+         sodipodi:role="line"
+         id="tspan3829-9"
+         x="645.92499"
+         y="458.63718"
+         style="font-size:450px;font-style:normal;font-variant:normal;font-weight:600;font-stretch:normal;fill:#000080;font-family:URW Gothic L;-inkscape-font-specification:URW Gothic L Semi-Bold">S</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:500px;font-style:normal;font-weight:bold;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000080;fill-opacity:1;stroke:none;font-family:Sans;-inkscape-font-specification:Sans Bold"
+       x="582.25"
+       y="954.63721"
+       id="text3827-8-9"
+       sodipodi:linespacing="125%"><tspan
+         sodipodi:role="line"
+         id="tspan3829-9-8"
+         x="582.25"
+         y="954.63721"
+         style="font-size:450px;font-style:normal;font-variant:normal;font-weight:600;font-stretch:normal;fill:#000080;font-family:URW Gothic L;-inkscape-font-specification:URW Gothic L Semi-Bold">C</tspan></text>
+  </g>
+</svg>
