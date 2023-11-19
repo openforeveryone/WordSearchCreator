@@ -1,7 +1,12 @@
+#Install
 The easiest way to install is to download the pre-compiled package for your system from: http://www.wordsearchcreator.org/downloads/
 Follow these instructions if there is no package available for your system or you want to make changes to the source.
 
-To compile ensure you have QT 4 development files installed then run:
+Ensure you have QT 5 development files installed.
+For Debian/Ubuntu run:
+sudo apt install build-essential qtbase5-dev libqt5svg5-dev
+
+To compile run:
 qmake
 make
 
