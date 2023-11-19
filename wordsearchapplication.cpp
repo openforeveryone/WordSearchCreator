@@ -20,6 +20,9 @@
 #include <QMessageBox>
 #include <QSplashScreen>
 #include <QFileOpenEvent>
+#ifdef Q_OS_WIN32
+#include <QFontDatabase>
+#endif
 
 #include "wordsearchdoc.h"
 #include "mainwindow.h"
