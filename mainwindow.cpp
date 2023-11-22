@@ -58,7 +58,9 @@ MainWindow::MainWindow(WordSearchDoc *wsdoc, QWidget *parent)
 void MainWindow::SetupWindow()
 {
     setWindowFilePath(QString("Untitled"));
+#ifndef Q_OS_MAC
     setWindowTitle("Untitled[*] - Word Search Creator");
+#endif
     QScrollArea *scrollArea = new QScrollArea;
     scrollArea->setWidget(wsdraw);
 
