@@ -230,7 +230,7 @@ void MainWindow::SetupWindow()
     QMenu *wordsearchMenu = menuBar()->addMenu(tr("Word Search"));
     QMenu *wordlistMenu = menuBar()->addMenu(tr("Word List"));
 
-#ifdef Q_WS_MAC
+#ifdef Q_OS_MAC
 	//Hide icons in menus:
 	newAct->setIconVisibleInMenu(false);
 	saveAct->setIconVisibleInMenu(false);
@@ -325,18 +325,18 @@ void MainWindow::SetupWindow()
     //toolbar1->addAction(allowplay);
     toolbar1->addAction(clearplayanswers);
     addToolBar(toolbar1);
-#ifndef Q_WS_MAC
+#ifndef Q_OS_MAC
     QApplication::setWindowIcon(QIcon(":/icons/512x512icon.png"));
 #endif
     WordSearchApplication *app = static_cast<WordSearchApplication*>(QApplication::instance());
-#ifdef Q_WS_MAC
+#ifdef Q_OS_MAC
     //When the menu list is updated update the window menu
     connect(app, SIGNAL(windowListChanged()), this, SLOT(updateWindowMenu()));
 #endif
     //Register the window
     app->registerWindow(this);
 
-#ifdef Q_WS_MAC
+#ifdef Q_OS_MAC
     setUnifiedTitleAndToolBarOnMac(true);
 #endif
 }
