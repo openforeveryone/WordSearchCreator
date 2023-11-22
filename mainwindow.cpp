@@ -344,7 +344,7 @@ void MainWindow::SetupWindow()
 void MainWindow::ShowDoc()
 {
     //LaunchBrowserDialog::launchBrowser(QUrl("http://openforschools.co.uk/wordsearchcreator/doc/"));
-    QDesktopServices::openUrl(QUrl("http://wordsearchcreator.org/doc/1.1"));
+    QDesktopServices::openUrl(QUrl("http://wordsearchcreator.org/doc/1.2"));
 }
 
 void MainWindow::CheckUpdate()
@@ -360,10 +360,15 @@ void MainWindow::download()
 
 void MainWindow::ShowAbout()
 {
-    QDialog *About = new QDialog;
-    Ui::AboutDialog ui;
-    ui.setupUi(About);
-    About->exec();
+    QDialog *aboutDialog = new QDialog;
+    QLabel *label = new QLabel(aboutDialog);
+    label->setObjectName(QString::fromUtf8("label"));
+    label->setPixmap(QPixmap(QString::fromUtf8(":/images/about.png")));
+    label->setGeometry(QRect(QPoint(0, 0), label->pixmap()->size()));
+    aboutDialog->setMinimumSize(QSize(label->pixmap()->size()));
+    aboutDialog->setMaximumSize(QSize(label->pixmap()->size()));
+    aboutDialog->setModal(true);
+    aboutDialog->exec();
 }
 
 void MainWindow::changelistorder(QAction *listorderaction)

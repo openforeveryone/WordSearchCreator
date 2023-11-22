@@ -40,7 +40,7 @@ UpdateChecker::UpdateChecker(QObject *parent) :
 void UpdateChecker::checkForUpdate(bool manual = false)
 {
     QUrlQuery query;
-    QUrl url("http://www.wordsearchcreator.org/update/1.1/check.php");
+    QUrl url("http://www.wordsearchcreator.org/update/1.2/check.php");
     if (manual)
         query.addQueryItem("type", "manual");
     else
@@ -71,7 +71,7 @@ void UpdateChecker::updateReplyFinished(QNetworkReply* reply)
     if (reply->error()!=QNetworkReply::NoError)
     {
         if (manualRequest) //If the check was manual and there was an error then show the browser.
-            QDesktopServices::openUrl(QUrl("http://wordsearchcreator.org/update/1.1"));
+            QDesktopServices::openUrl(QUrl("http://wordsearchcreator.org/update/1.2"));
         //If the check was automatic and there was an error we ignore it.
         return;
     }
@@ -96,7 +96,7 @@ void UpdateChecker::updateReplyFinished(QNetworkReply* reply)
     {
         //If the request was manual then show the website
         if (manualRequest)
-            QDesktopServices::openUrl(QUrl("http://wordsearchcreator.org/update/1.1"));
+            QDesktopServices::openUrl(QUrl("http://wordsearchcreator.org/update/1.2"));
         return;
     }
 

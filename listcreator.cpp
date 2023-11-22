@@ -108,5 +108,5 @@ void listCreator::okPressed()
 
 void listCreator::help()
 {
-    QDesktopServices::openUrl(QUrl("http:/wordsearchcreator.org/doc/1.1/listcreator"));
+    QDesktopServices::openUrl(QUrl("http:/wordsearchcreator.org/doc/1.2/listcreator"));
 }

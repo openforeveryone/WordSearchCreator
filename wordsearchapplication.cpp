@@ -50,7 +50,7 @@ WordSearchApplication::WordSearchApplication( int & argc, char **argv ) :
         //Open the file
         fileloaded = !newwsd->Open(fileName);
         if (!fileloaded)
-            QMessageBox::warning(Splash,"Word Search Creator 1.1", QString("Cannot open file: %1").arg(fileName));
+            QMessageBox::warning(Splash,"Word Search Creator 1.2", QString("Cannot open file: %1").arg(fileName));
     }
 
     updateChecker = new UpdateChecker(this);
@@ -87,7 +87,7 @@ void WordSearchApplication::loadFile(const QString &fileName)
     newwsd = new WordSearchDoc;
     fileloaded = !newwsd->Open(fileName);
     if (!fileloaded)
-        QMessageBox::warning(Splash,"Word Search Creator 1.1", QString("Cannot open file: %1").arg(fileName));
+        QMessageBox::warning(Splash,"Word Search Creator 1.2", QString("Cannot open file: %1").arg(fileName));
     window = new MainWindow(newwsd);
     newwsd->setEditedState(false);
     window->show();
