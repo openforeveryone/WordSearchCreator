@@ -33,7 +33,6 @@
 #include "wordsearchcontrol.h"
 #include "maskdrawer.h"
 #include "wordsearch.h"
-#include "ui_about.h"
 #include "wordsearchapplication.h"
 #include "updatechecker.h"
 #include "preferencesdialog.h"

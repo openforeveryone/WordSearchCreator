@@ -64,8 +64,7 @@ HEADERS += appearancedialog.h \
     wordsearchapplication.h \
     updatechecker.h \
     preferencesdialog.h
-FORMS += about.ui \
-    appearance.ui \
+FORMS += appearance.ui \
     listcreator.ui \
     pagelayout.ui \
     alphabet.ui \
