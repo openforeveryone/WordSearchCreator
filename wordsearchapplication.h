@@ -39,17 +39,21 @@ public:
     void deRegisterWindow(MainWindow *window);
     QList<MainWindow*> windows;
     UpdateChecker *updateChecker;
+#ifdef Q_OS_MAC
     QMenu *dockMenu;
+#endif
     void setWindowCheck();
 
 private:
     MainWindow *window;
     void loadFile(const QString &fileName);
     QSplashScreen *Splash ;
+#ifdef Q_OS_MAC
     QList<QAction*> windowActions;
     QActionGroup *windowselectorGroup;
     QAction *dockSerprator;
     void updateDockMenu();
+#endif
 
 signals:
     void windowListChanged();

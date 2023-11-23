@@ -43,6 +43,7 @@ WordSearchApplication::WordSearchApplication( int & argc, char **argv ) :
     Splash->show();
     processEvents();
 
+#ifdef Q_OS_MAC
     dockMenu = new QMenu("DockMenu");
     dockMenu->setAsDockMenu();
     dockSerprator = dockMenu->addSeparator();
@@ -51,6 +52,7 @@ WordSearchApplication::WordSearchApplication( int & argc, char **argv ) :
     connect(newAct, SIGNAL(triggered()), this, SLOT(New()));
     windowselectorGroup = new QActionGroup(this);
     connect(windowselectorGroup, SIGNAL(triggered(QAction*)), this, SLOT(windowSelected(QAction*)));
+#endif
 
     int fileloaded = false;
     WordSearchDoc *newwsd;
@@ -131,10 +133,13 @@ void WordSearchApplication::deRegisterWindow(MainWindow *window)
 
 void WordSearchApplication::updateWindowLists()
 {
-    //Emitting this signal will cause all MainWindows to update
-    //their window menus and the dock menu to be updated.
+    //Emitting this signal will cause all MainWindows to update their window menus
     emit windowListChanged();
+
+#ifdef Q_OS_MAC
+    //On macOS we also want and the dock menu to be updated
     updateDockMenu();
+#endif
 }
 
 void WordSearchApplication::quitApplication()
@@ -145,6 +150,7 @@ void WordSearchApplication::quitApplication()
     }
 }
 
+#ifdef Q_OS_MAC
 void WordSearchApplication::updateDockMenu()
 {
     qDebug() << "updateDockMenu()";
@@ -173,9 +179,11 @@ void WordSearchApplication::updateDockMenu()
         i++;
     }
 }
+#endif
 
 void WordSearchApplication::setWindowCheck()
 {
+#ifdef Q_OS_MAC
     qDebug() << "setWindowCheck()";
     int i=0;
     foreach (MainWindow *window, windows)
@@ -183,6 +191,9 @@ void WordSearchApplication::setWindowCheck()
         windowActions[i]->setChecked(window->isActiveWindow());
         i++;
     }
+#endif
+    //Emitting this signal will cause all MainWindows to update their window menu
+    //check mark ensuuing it is against the currently focused window
     emit currentWindowChanged();
 }
 
