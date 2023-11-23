@@ -20,9 +20,12 @@
 #include <QMessageBox>
 #include <QSplashScreen>
 #include <QFileOpenEvent>
+#include <QMenu>
 #ifdef Q_OS_WIN32
 #include <QFontDatabase>
 #endif
+
+#include <QDebug>
 
 #include "wordsearchdoc.h"
 #include "mainwindow.h"
@@ -39,6 +42,15 @@ WordSearchApplication::WordSearchApplication( int & argc, char **argv ) :
     Splash = new QSplashScreen(QPixmap(":/images/about.png"));
     Splash->show();
     processEvents();
+
+    dockMenu = new QMenu("DockMenu");
+    dockMenu->setAsDockMenu();
+    dockSerprator = dockMenu->addSeparator();
+    QAction *newAct = new QAction(tr("New Wordsearch"), this);
+    dockMenu->addAction(newAct);
+    connect(newAct, SIGNAL(triggered()), this, SLOT(New()));
+    windowselectorGroup = new QActionGroup(this);
+    connect(windowselectorGroup, SIGNAL(triggered(QAction*)), this, SLOT(windowSelected(QAction*)));
 
     int fileloaded = false;
     WordSearchDoc *newwsd;
@@ -119,8 +131,10 @@ void WordSearchApplication::deRegisterWindow(MainWindow *window)
 
 void WordSearchApplication::updateWindowLists()
 {
-    //Emmiting this signal will cause all MainWindows to update their window menus.
+    //Emitting this signal will cause all MainWindows to update
+    //their window menus and the dock menu to be updated.
     emit windowListChanged();
+    updateDockMenu();
 }
 
 void WordSearchApplication::quitApplication()
@@ -129,4 +143,76 @@ void WordSearchApplication::quitApplication()
     {
         window->close();
     }
+}
+
+void WordSearchApplication::updateDockMenu()
+{
+    qDebug() << "updateDockMenu()";
+    foreach (QAction *action, windowActions)
+    {
+        dockMenu->removeAction(action);
+        delete action;
+    }
+    windowActions.clear();
+    int i=0;
+    foreach (MainWindow *window, windows)
+    {
+        QString title = window->windowTitle();
+        //Remove the edited placeholder. Shoud be done better than this.
+        title.remove("[*]");
+        QAction *windowAction = new QAction(title, this);
+        dockMenu->insertAction(dockSerprator, windowAction);
+        windowAction->setCheckable(true);
+        windowAction->setData(i);
+        windowAction->setActionGroup(windowselectorGroup);
+        if (window->isActiveWindow())
+        {
+            windowAction->setChecked(true);
+        }
+        windowActions.append(windowAction);
+        i++;
+    }
+}
+
+void WordSearchApplication::setWindowCheck()
+{
+    qDebug() << "setWindowCheck()";
+    int i=0;
+    foreach (MainWindow *window, windows)
+    {
+        windowActions[i]->setChecked(window->isActiveWindow());
+        i++;
+    }
+    emit currentWindowChanged();
+}
+
+void WordSearchApplication::windowSelected(QAction *action)
+{
+    //One of the windows was selected off the dock menu
+    QMainWindow *selctedWindow = windows.at(action->data().toInt());
+    qDebug() << "window Selected " << action->data().toInt() << " " << selctedWindow->windowTitle() << "State: " << selctedWindow->windowState();
+    if (selctedWindow->windowState().testFlag(Qt::WindowState::WindowMinimized))
+    {
+        //Seems the only way to restore a minimised window on macOS is to use showMaximized() or showNormal() but we must know which to use.
+        if(selctedWindow->windowState().testFlag(Qt::WindowState::WindowMaximized))
+        {
+            selctedWindow->showMaximized();
+        }
+        else
+        {
+            selctedWindow->showNormal();
+        }
+    }
+    else
+    {
+        qDebug() << "Raising Window";
+        selctedWindow->raise();
+        selctedWindow->activateWindow();
+    }
+}
+
+void WordSearchApplication::New()
+{
+    MainWindow *window = new MainWindow();
+    window->show();
 }
