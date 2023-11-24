@@ -49,7 +49,6 @@ WordSearchControl::WordSearchControl(QWidget *)
     connect(yspin, SIGNAL(valueChanged(int)), this, SIGNAL(YValChanged(int)));
     connect(createbutton, SIGNAL(clicked()), this, SLOT(createclicked()));
     connect(WordListBox, SIGNAL(textChanged()), this, SLOT(updateNoLines()));
-    //connect(http, SIGNAL(requestFinished(int, bool)), this, SLOT(httpRequestFinished(int, bool)));
 }
 
 void WordSearchControl::createclicked()

@@ -25,8 +25,6 @@
 #include <QFontDatabase>
 #endif
 
-#include <QDebug>
-
 #include "wordsearchdoc.h"
 #include "mainwindow.h"
 #include "updatechecker.h"
@@ -153,7 +151,6 @@ void WordSearchApplication::quitApplication()
 #ifdef Q_OS_MAC
 void WordSearchApplication::updateDockMenu()
 {
-    qDebug() << "updateDockMenu()";
     foreach (QAction *action, windowActions)
     {
         dockMenu->removeAction(action);
@@ -184,7 +181,6 @@ void WordSearchApplication::updateDockMenu()
 void WordSearchApplication::setWindowCheck()
 {
 #ifdef Q_OS_MAC
-    qDebug() << "setWindowCheck()";
     int i=0;
     foreach (MainWindow *window, windows)
     {
@@ -201,7 +197,6 @@ void WordSearchApplication::windowSelected(QAction *action)
 {
     //One of the windows was selected off the dock menu
     QMainWindow *selctedWindow = windows.at(action->data().toInt());
-    qDebug() << "window Selected " << action->data().toInt() << " " << selctedWindow->windowTitle() << "State: " << selctedWindow->windowState();
     if (selctedWindow->windowState().testFlag(Qt::WindowState::WindowMinimized))
     {
         //Seems the only way to restore a minimised window on macOS is to use showMaximized() or showNormal() but we must know which to use.
@@ -216,7 +211,6 @@ void WordSearchApplication::windowSelected(QAction *action)
     }
     else
     {
-        qDebug() << "Raising Window";
         selctedWindow->raise();
         selctedWindow->activateWindow();
     }

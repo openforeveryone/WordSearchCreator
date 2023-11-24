@@ -28,8 +28,6 @@
 #include <QDesktopServices>
 #include <QCloseEvent>
 
-#include <QDebug>
-
 #include "wordsearchdrawer.h"
 #include "wordsearchdoc.h"
 #include "wordsearchcontrol.h"
@@ -382,8 +380,7 @@ void MainWindow::SetupWindow()
 bool MainWindow::event(QEvent *event)
 {
     if (event->type() == QEvent::WindowActivate || event->type() == QEvent::WindowDeactivate)
-    {
-        qDebug() << "Window " <<this->windowTitle() << " activated";
+    {;
         WordSearchApplication *app = static_cast<WordSearchApplication*>(QApplication::instance());
         app->setWindowCheck();
         if (event->type() == QEvent::WindowDeactivate)
@@ -450,7 +447,6 @@ void MainWindow::changeWordSpace(QAction *action)
 
 void MainWindow::updateWindowMenu()
 {
-    qDebug() << "updateWindowMenu()";
     WordSearchApplication *app = static_cast<WordSearchApplication*>(QApplication::instance());
     foreach (QAction *action, windowActions)
     {
@@ -484,7 +480,6 @@ void MainWindow::updateWindowMenu()
 
 void MainWindow::setWindowCheck()
 {
-    qDebug() << "MainWindow::setWindowCheck()";
     WordSearchApplication *app = static_cast<WordSearchApplication*>(QApplication::instance());
     int i=0;
     foreach (MainWindow *window, app->windows)
@@ -520,7 +515,6 @@ void MainWindow::windowSelected(QAction *action)
     }
     else
     {
-        qDebug() << "Raising Window";
         selctedWindow->raise();
         selctedWindow->activateWindow();
     }
