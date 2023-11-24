@@ -48,14 +48,18 @@ void WordSearchDrawer::paintEvent(QPaintEvent *event)
     event->accept();
     stopwatch.start();
     QPainter painter(this);
-    //painter.save();
     painter.scale(scale,scale);
     if (viewMode) {
+        //Draw the backgrounds and page outline
         painter.fillRect (0, 0, width()/scale+1, height()/scale+1, QColor(200,200,200));
         painter.translate(20,20);
         painter.fillRect (3, 3, painter.device()->logicalDpiX() * doc->pagewidth, painter.device()->logicalDpiY() * doc->pageheight, QColor(0, 0, 0));
         painter.fillRect (0, 0, painter.device()->logicalDpiX() * doc->pagewidth, painter.device()->logicalDpiY() * doc->pageheight, doc->getBGColor());
+        QPen pen;
+        pen.setWidth(0);
+        painter.setPen(pen);
         painter.drawRect (0, 0, painter.device()->logicalDpiX() * doc->pagewidth, painter.device()->logicalDpiY() * doc->pageheight);
+
         drawWS(&painter, 0, 0, logicalDpiX() * doc->pagewidth - 0, logicalDpiY() * doc->pageheight + 0);
     }
     else {
