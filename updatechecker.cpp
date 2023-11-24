@@ -40,7 +40,7 @@ UpdateChecker::UpdateChecker(QObject *parent) :
 void UpdateChecker::checkForUpdate(bool manual = false)
 {
     QUrlQuery query;
-    QUrl url("http://www.wordsearchcreator.org/update/1.2/check.php");
+    QUrl url("http://www.wordsearchcreator.org/update/1.1/check.php");
     if (manual)
         query.addQueryItem("type", "manual");
     else

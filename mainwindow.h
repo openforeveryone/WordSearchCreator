@@ -49,6 +49,8 @@ private:
     QList<QAction*> windowActions;
     QActionGroup *windowselectorGroup;
     QAction *thisWindowAction; //The action that represents this window.
+    QList<QAction*> actionsDisableOnMinimise;
+    bool event(QEvent *event);
 
 private slots:
     void ShowDoc();
@@ -58,6 +60,7 @@ private slots:
     void changelistorder(QAction *listorderaction);
     void changeWordSpace(QAction *action);
     void updateWindowMenu();
+    void setWindowCheck();
     void windowSelected(QAction *action);
     void maximise();
     void minimise();

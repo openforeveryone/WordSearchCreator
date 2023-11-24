@@ -58,7 +58,9 @@ MainWindow::MainWindow(WordSearchDoc *wsdoc, QWidget *parent)
 void MainWindow::SetupWindow()
 {
     setWindowFilePath(QString("Untitled"));
+#ifndef Q_OS_MAC
     setWindowTitle("Untitled[*] - Word Search Creator");
+#endif
     QScrollArea *scrollArea = new QScrollArea;
     scrollArea->setWidget(wsdraw);
 
@@ -136,6 +138,7 @@ void MainWindow::SetupWindow()
     docAct->setIcon(QIcon(":/icons/contents.png"));
     connect(docAct, SIGNAL(triggered()), this, SLOT(ShowDoc()));
     QAction *checkAct = new QAction(tr("Check For Updates"), this);
+    checkAct->setMenuRole(QAction::ApplicationSpecificRole);
     connect(checkAct, SIGNAL(triggered()), this, SLOT(CheckUpdate()));
     QAction *aboutAct = new QAction(tr("About Word Search Creator"), this);
     aboutAct->setIcon(QIcon(":/icons/22x22icon.png"));
@@ -245,7 +248,8 @@ void MainWindow::SetupWindow()
 	zoomIn->setIconVisibleInMenu(false);
 	zoomOut->setIconVisibleInMenu(false);
 	docAct->setIconVisibleInMenu(false);
-	aboutAct->setIconVisibleInMenu(false);
+    aboutAct->setIconVisibleInMenu(false);
+
     //Mac window menu:
     windowMenu = menuBar()->addMenu(tr("&Window"));
     QAction *minimise = new QAction(tr("Minimise"), this);
@@ -258,6 +262,38 @@ void MainWindow::SetupWindow()
     windowMenu->addSeparator();
     windowselectorGroup = new QActionGroup(this);
     connect(windowselectorGroup, SIGNAL(triggered(QAction*)), this, SLOT(windowSelected(QAction*)));
+
+    //These actions need dissabling when the window is minimised
+    actionsDisableOnMinimise.append(closeAct);
+    actionsDisableOnMinimise.append(saveAct);
+    actionsDisableOnMinimise.append(saveAsAct);
+    actionsDisableOnMinimise.append(PDFAct);
+    actionsDisableOnMinimise.append(SVGAct);
+    actionsDisableOnMinimise.append(PrintAct);
+    actionsDisableOnMinimise.append(zoomIn);
+    actionsDisableOnMinimise.append(zoomOut);
+    actionsDisableOnMinimise.append(autoZoom);
+    actionsDisableOnMinimise.append(pageLayout);
+    actionsDisableOnMinimise.append(screenLayout);
+    actionsDisableOnMinimise.append(showCB);
+    actionsDisableOnMinimise.append(appearanceAct);
+    actionsDisableOnMinimise.append(pageLayoutd);
+    actionsDisableOnMinimise.append(setFooter);
+    actionsDisableOnMinimise.append(dsAct);
+    actionsDisableOnMinimise.append(mdAct);
+    actionsDisableOnMinimise.append(copy);
+    actionsDisableOnMinimise.append(alphabetAct);
+    actionsDisableOnMinimise.append(wordSpaceFSAct);
+    actionsDisableOnMinimise.append(wordSpaceRSAct);
+    actionsDisableOnMinimise.append(wordSpaceKSAct);
+    actionsDisableOnMinimise.append(listAct);
+    actionsDisableOnMinimise.append(listorderAOAct);
+    actionsDisableOnMinimise.append(listorderAAAct);
+    actionsDisableOnMinimise.append(listorderADAct);
+    actionsDisableOnMinimise.append(listorderLDAct);
+    actionsDisableOnMinimise.append(listorderLAAct);
+    actionsDisableOnMinimise.append(minimise);
+    actionsDisableOnMinimise.append(maximise);
 #endif
 
     QMenu *helpMenu = menuBar()->addMenu(tr("&Help"));
@@ -331,6 +367,7 @@ void MainWindow::SetupWindow()
 #ifdef Q_OS_MAC
     //When the menu list is updated update the window menu
     connect(app, SIGNAL(windowListChanged()), this, SLOT(updateWindowMenu()));
+    connect(app, SIGNAL(currentWindowChanged()), this, SLOT(setWindowCheck()));
 #endif
     //Register the window
     app->registerWindow(this);
@@ -338,6 +375,32 @@ void MainWindow::SetupWindow()
 #ifdef Q_OS_MAC
     setUnifiedTitleAndToolBarOnMac(true);
 #endif
+}
+
+bool MainWindow::event(QEvent *event)
+{
+    if (event->type() == QEvent::WindowActivate || event->type() == QEvent::WindowDeactivate)
+    {;
+        WordSearchApplication *app = static_cast<WordSearchApplication*>(QApplication::instance());
+        app->setWindowCheck();
+        if (event->type() == QEvent::WindowDeactivate)
+        {
+            foreach (QAction *action, actionsDisableOnMinimise)
+            {
+                action->setDisabled(true);
+            }
+        }
+        else
+        {
+            foreach (QAction *action, actionsDisableOnMinimise)
+            {
+                action->setDisabled(false);
+            }
+            //This keeps getting hidden on minise, so show it.
+            wscdock->show();
+        }
+    }
+    return QMainWindow::event(event);
 }
 
 void MainWindow::ShowDoc()
@@ -400,7 +463,9 @@ void MainWindow::updateWindowMenu()
         QAction *windowAction = new QAction(title, this);
         windowMenu->addAction(windowAction);
         windowAction->setCheckable(true);
+#ifndef Q_OS_MAC
         windowAction->setShortcut(QString("Ctrl+").append(QString::number(i+1)));
+#endif
         windowAction->setData(i);
         windowAction->setActionGroup(windowselectorGroup);
         if (window==this)
@@ -409,6 +474,17 @@ void MainWindow::updateWindowMenu()
             thisWindowAction=windowAction;
         }
         windowActions.append(windowAction);
+        i++;
+    }
+}
+
+void MainWindow::setWindowCheck()
+{
+    WordSearchApplication *app = static_cast<WordSearchApplication*>(QApplication::instance());
+    int i=0;
+    foreach (MainWindow *window, app->windows)
+    {
+        windowActions[i]->setChecked(window->isActiveWindow());
         i++;
     }
 }
@@ -422,9 +498,26 @@ void MainWindow::launchPreferences()
 
 void MainWindow::windowSelected(QAction *action)
 {
-    thisWindowAction->setChecked(true);
+    //One of the windows was selected off the menu
     WordSearchApplication *app = static_cast<WordSearchApplication*>(QApplication::instance());
-    app->windows.at(action->data().toInt())->activateWindow();
+    QWidget *selctedWindow = app->windows.at(action->data().toInt());
+    if (selctedWindow->windowState().testFlag(Qt::WindowState::WindowMinimized))
+    {
+        //Seems the only way to restore a minimised window on macOS is to use showMaximized() or showNormal() but we must know which to use.
+        if(selctedWindow->windowState().testFlag(Qt::WindowState::WindowMaximized))
+        {
+            selctedWindow->showMaximized();
+        }
+        else
+        {
+            selctedWindow->showNormal();
+        }
+    }
+    else
+    {
+        selctedWindow->raise();
+        selctedWindow->activateWindow();
+    }
 }
 
 void MainWindow::maximise()
@@ -463,7 +556,6 @@ void MainWindow::closeEvent(QCloseEvent *event)
     {
         event->accept();
         app->deRegisterWindow(this);
-
     }
 }
 

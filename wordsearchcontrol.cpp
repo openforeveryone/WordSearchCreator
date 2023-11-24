@@ -49,7 +49,6 @@ WordSearchControl::WordSearchControl(QWidget *)
     connect(yspin, SIGNAL(valueChanged(int)), this, SIGNAL(YValChanged(int)));
     connect(createbutton, SIGNAL(clicked()), this, SLOT(createclicked()));
     connect(WordListBox, SIGNAL(textChanged()), this, SLOT(updateNoLines()));
-    //connect(http, SIGNAL(requestFinished(int, bool)), this, SLOT(httpRequestFinished(int, bool)));
 }
 
 void WordSearchControl::createclicked()
@@ -148,7 +147,9 @@ int WordSearchControl::Save()
     this->parentWidget()->parentWidget()->setWindowFilePath(wsd->filename);
     WordSearchApplication *app = static_cast<WordSearchApplication*>(QApplication::instance());
     app->updateWindowLists();
+#ifndef Q_OS_MAC
     this->parentWidget()->parentWidget ()->setWindowTitle(wsd->filename + "[*] - Word Search Creator");
+#endif
     wsd->saveToIO(file);
     wsd->setEditedState(false);
     file.close();
@@ -206,7 +207,9 @@ void WordSearchControl::SetupTemplate()
     this->parentWidget()->parentWidget()->setWindowFilePath(QString("Untitled"));
     WordSearchApplication *app = static_cast<WordSearchApplication*>(QApplication::instance());
     app->updateWindowLists();
+#ifndef Q_OS_MAC
     this->parentWidget()->parentWidget ()->setWindowTitle("Untitled[*] - Word Search Creator");
+#endif
     wsd->setEditedState(false);
 }
 
@@ -284,7 +287,9 @@ void WordSearchControl::UpdateConts()
     this->parentWidget()->parentWidget()->setWindowFilePath(wsd->filename);
     WordSearchApplication *app = static_cast<WordSearchApplication*>(QApplication::instance());
     app->updateWindowLists();
+#ifndef Q_OS_MAC
     this->parentWidget()->parentWidget()->setWindowTitle(wsd->filename + "[*] - Word Search Creator");
+#endif
     useMaskChanged(wsd->getUseMask());
 }
 

@@ -25,6 +25,9 @@
 class MainWindow;
 class UpdateChecker;
 class QSplashScreen;
+class QMenu;
+class QAction;
+class QActionGroup;
 
 class WordSearchApplication : public QApplication
 {
@@ -36,18 +39,33 @@ public:
     void deRegisterWindow(MainWindow *window);
     QList<MainWindow*> windows;
     UpdateChecker *updateChecker;
+#ifdef Q_OS_MAC
+    QMenu *dockMenu;
+#endif
+    void setWindowCheck();
 
 private:
     MainWindow *window;
     void loadFile(const QString &fileName);
     QSplashScreen *Splash ;
+#ifdef Q_OS_MAC
+    QList<QAction*> windowActions;
+    QActionGroup *windowselectorGroup;
+    QAction *dockSerprator;
+    void updateDockMenu();
+#endif
 
 signals:
     void windowListChanged();
+    void currentWindowChanged();
 
 public slots:
     void quitApplication();
-    void updateWindowLists();
+    void updateWindowLists();    
+    void New();
+
+private slots:
+    void windowSelected(QAction *action);
 };
 
 #endif // WORDSEARCHAPPLICATION_H
