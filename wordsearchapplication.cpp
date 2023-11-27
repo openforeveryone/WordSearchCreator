@@ -42,14 +42,7 @@ WordSearchApplication::WordSearchApplication( int & argc, char **argv ) :
     processEvents();
 
 #ifdef Q_OS_MAC
-    dockMenu = new QMenu("DockMenu");
-    dockMenu->setAsDockMenu();
-    dockSerprator = dockMenu->addSeparator();
-    QAction *newAct = new QAction(tr("New Wordsearch"), this);
-    dockMenu->addAction(newAct);
-    connect(newAct, SIGNAL(triggered()), this, SLOT(New()));
-    windowselectorGroup = new QActionGroup(this);
-    connect(windowselectorGroup, SIGNAL(triggered(QAction*)), this, SLOT(windowSelected(QAction*)));
+    setupDockMenu();
 #endif
 
     int fileloaded = false;
@@ -94,6 +87,7 @@ WordSearchApplication::WordSearchApplication( int & argc, char **argv ) :
 void WordSearchApplication::loadFile(const QString &fileName)
 {
     //This function is called when a Mac askes us to open a file.
+    setupDockMenu();
     WordSearchDoc *newwsd;
     int fileloaded = false;
     newwsd = new WordSearchDoc;
@@ -149,6 +143,20 @@ void WordSearchApplication::quitApplication()
 }
 
 #ifdef Q_OS_MAC
+void WordSearchApplication::setupDockMenu()
+{
+    if (dockMenu)
+        return;
+    dockMenu = new QMenu("DockMenu");
+    dockMenu->setAsDockMenu();
+    dockSerprator = dockMenu->addSeparator();
+    QAction *newAct = new QAction(tr("New Wordsearch"), this);
+    dockMenu->addAction(newAct);
+    connect(newAct, SIGNAL(triggered()), this, SLOT(New()));
+    windowselectorGroup = new QActionGroup(this);
+    connect(windowselectorGroup, SIGNAL(triggered(QAction*)), this, SLOT(windowSelected(QAction*)));
+}
+
 void WordSearchApplication::updateDockMenu()
 {
     foreach (QAction *action, windowActions)

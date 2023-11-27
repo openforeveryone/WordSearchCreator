@@ -40,7 +40,7 @@ public:
     QList<MainWindow*> windows;
     UpdateChecker *updateChecker;
 #ifdef Q_OS_MAC
-    QMenu *dockMenu;
+    QMenu *dockMenu = 0;
 #endif
     void setWindowCheck();
 
@@ -53,6 +53,7 @@ private:
     QActionGroup *windowselectorGroup;
     QAction *dockSerprator;
     void updateDockMenu();
+    void setupDockMenu();
 #endif
 
 signals:
