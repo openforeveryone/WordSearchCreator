@@ -13,9 +13,11 @@ jobs:
     
     steps:
     - name: Install Qt
-      run: sudo apt-get install -y qt5-default libqt5svg5-dev
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y qt5-default libqt5svg5-dev
     - uses: actions/checkout@v3
     - name: qmake
       run: qmake
     - name: make
-      run: make
+      run: make -j5
