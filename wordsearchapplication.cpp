@@ -86,8 +86,10 @@ WordSearchApplication::WordSearchApplication( int & argc, char **argv ) :
 
 void WordSearchApplication::loadFile(const QString &fileName)
 {
-    //This function is called when a Mac askes us to open a file.
+    //This function is called when a Mac asks us to open a file.
+#ifdef Q_OS_MAC
     setupDockMenu();
+#endif
     WordSearchDoc *newwsd;
     int fileloaded = false;
     newwsd = new WordSearchDoc;
