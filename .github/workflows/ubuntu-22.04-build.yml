@@ -1,0 +1,21 @@
+name: Ubuntu 20.04 Build
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-20.04
+    
+    steps:
+    - name: Install Qt
+      run: sudo apt-get install -y qt5-default libqt5svg5-dev
+    - uses: actions/checkout@v3
+    - name: qmake
+      run: .qmake
+    - name: make
+      run: make
