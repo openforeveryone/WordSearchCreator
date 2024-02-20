@@ -19,7 +19,6 @@ jobs:
         host: 'windows'
         target: 'desktop'
         arch: 'win64_mingw81'
-        archives: 'x86_64 qtsvg'
     - uses: actions/checkout@v3
     - name: qmake
       run: qmake
