@@ -15,7 +15,10 @@ jobs:
     - name: Install Qt
       run: brew install qt@5
     - uses: actions/checkout@v3
-    - name: qmake
-      run: qmake
-    - name: make
-      run: make -j5
+    - name: Build
+      run: |
+        PATH="/usr/local/opt/qt@5/bin:$PATH"
+        LDFLAGS="-L/usr/local/opt/qt@5/lib"
+        CPPFLAGS="-I/usr/local/opt/qt@5/include"
+        qmake
+        make -j5
