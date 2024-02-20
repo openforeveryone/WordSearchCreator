@@ -18,7 +18,8 @@ jobs:
         version: '5.15.2'
         host: 'windows'
         target: 'desktop'
-        arch: 'win32_mingw81'
+        arch: 'win64_mingw81'
+        archives: 'qtsvg'
     - uses: actions/checkout@v3
     - name: qmake
       run: qmake
