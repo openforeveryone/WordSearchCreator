@@ -1,0 +1,21 @@
+name: macOS Build
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build:
+
+    runs-on: macos-latest
+    
+    steps:
+    - name: Install Qt
+      run: brew install -y qt@5
+    - uses: actions/checkout@v3
+    - name: qmake
+      run: qmake
+    - name: make
+      run: make -j5
