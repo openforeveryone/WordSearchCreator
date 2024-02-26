@@ -26,3 +26,8 @@ jobs:
       run: qmake
     - name: make
       run: make -j5
+    - name: Archive compiled binary
+      uses: actions/upload-artifact@v4
+      with:
+       name: binary
+       path: wordsearchcreator.exe
