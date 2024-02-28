@@ -38,7 +38,8 @@ jobs:
     - name: Collect Dlls
       run: |
          mkdir dist\plugins\platforms\
-         cp .\release\wordsearchcreator.exe .\dist\
+         mkdir dist\plugins\styles\
+         cp .\release\wordsearchcreator.exe .\dist\Word` Search` Creator.exe
          cp ..\Qt\5.15.2\mingw81_64\bin\Qt5Gui.dll .\dist\
          cp ..\Qt\5.15.2\mingw81_64\bin\Qt5Core.dll .\dist\
          cp ..\Qt\5.15.2\mingw81_64\bin\Qt5Network.dll .\dist\
@@ -50,6 +51,7 @@ jobs:
          cp C:\mingw64\bin\libstdc++-6.dll .\dist\
          cp C:\mingw64\bin\libwinpthread-1.dll .\dist\
          cp ..\Qt\5.15.2\mingw81_64\plugins\platforms\qwindows.dll .\dist\plugins\platforms\
+         cp ..\Qt\5.15.2\mingw81_64\plugins\styles\qwindowsvistastyle.dll .\dist\plugins\styles\
          cp .\fonts\*.ttf .\dist\
 
     - name: Archive dist directory
@@ -57,3 +59,19 @@ jobs:
       with:
        name: dist
        path: dist
+
+    - name: Build Installer
+      run: |
+         cp wscinstaller.nsi .\dist\
+         cp FileAssociation.nsh .\dist\
+         cp .\dist\plugins\platforms\qwindows.dll .\dist\
+         cp .\dist\plugins\styles\qwindowsvistastyle.dll .\dist\
+         cd dist
+         makensis.exe wscinstaller.nsi
+
+    - name: Archive installer
+      uses: actions/upload-artifact@v4
+      with:
+       name: installer
+       path: dist/Word Search Creator 1.2 Installer.exe
+         
