@@ -35,10 +35,11 @@ jobs:
        name: binary
        path: release/wordsearchcreator.exe
        
-    - name: Collect Dlls
+    - name: Collect files for distribution
       run: |
          mkdir dist\plugins\platforms\
          mkdir dist\plugins\styles\
+         cp COPYING .\dist\
          cp .\release\wordsearchcreator.exe .\dist\Word` Search` Creator.exe
          cp ..\Qt\5.15.2\mingw81_64\bin\Qt5Gui.dll .\dist\
          cp ..\Qt\5.15.2\mingw81_64\bin\Qt5Core.dll .\dist\
@@ -60,7 +61,7 @@ jobs:
        name: dist
        path: dist
 
-    - name: Build Installer
+    - name: Build installer
       run: |
          cp wscinstaller.nsi .\dist\
          cp FileAssociation.nsh .\dist\
