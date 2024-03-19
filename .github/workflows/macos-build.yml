@@ -33,7 +33,7 @@ jobs:
     - name: Archive Basic DMG
       uses: actions/upload-artifact@v4
       with:
-       name: dmg
+       name: basic-dmg
        path: WordSearchCreator-1.2-Basic.dmg
 
     - name: Create Deployable App Bundle
@@ -53,5 +53,5 @@ jobs:
     - name: Archive Deployable DMG
       uses: actions/upload-artifact@v4
       with:
-       name: dmg
+       name: deployable-dmg
        path: WordSearchCreator-1.2.dmg
