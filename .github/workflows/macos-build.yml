@@ -8,13 +8,13 @@ on:
 
 jobs:
   build:
-
     runs-on: macos-latest
-    
     steps:
+    
     - name: Install Qt
       run: brew install qt@5
     - uses: actions/checkout@v3
+    
     - name: Build
       run: |
         PATH="/usr/local/opt/qt@5/bin:$PATH"
@@ -22,6 +22,7 @@ jobs:
         CPPFLAGS="-I/usr/local/opt/qt@5/include"
         qmake
         make -j5
+        macdeployqt WordSearchCreator.app
 
     - name: Create DMG
       run: |
