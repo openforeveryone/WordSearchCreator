@@ -35,6 +35,7 @@ jobs:
        path: WordSearchCreator1.2.dmg
 
     - name: Create Deployable App Bundle
+      run: |
         macdeployqt WordSearchCreator.app
 
     - name: Create Deployable DMG
