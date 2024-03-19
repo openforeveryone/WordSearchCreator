@@ -20,7 +20,7 @@ jobs:
         host: 'mac'
         target: 'desktop'
         arch: 'clang_64'
-        archives: 'qtsvg qtbase'
+        archives: 'qtsvg qtbase qttools'
         cache: 'true'
     
     - name: Build
