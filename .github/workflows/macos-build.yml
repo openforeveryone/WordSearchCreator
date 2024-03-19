@@ -22,14 +22,27 @@ jobs:
         CPPFLAGS="-I/usr/local/opt/qt@5/include"
         qmake
         make -j5
+
+    - name: Create Basic DMG
+      run: |
+        cp WordSearchCreator.app/ WordSearchCreator1.2/
+        hdiutil create -volname "WordSearchCreator 1.2" -srcfolder WordSearchCreator1.2 -ov -format UDZO WordSearchCreator1.2.dmg
+
+    - name: Archive Basic DMG
+      uses: actions/upload-artifact@v4
+      with:
+       name: dmg
+       path: WordSearchCreator1.2.dmg
+
+    - name: Create Deployable App Bundle
         macdeployqt WordSearchCreator.app
 
-    - name: Create DMG
+    - name: Create Deployable DMG
       run: |
         mv WordSearchCreator.app/ WordSearchCreator1.2/
         hdiutil create -volname "WordSearchCreator 1.2" -srcfolder WordSearchCreator1.2 -ov -format UDZO WordSearchCreator1.2.dmg
 
-    - name: Archive DMG
+    - name: Archive Deployable DMG
       uses: actions/upload-artifact@v4
       with:
        name: dmg
