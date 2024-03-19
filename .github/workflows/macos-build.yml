@@ -25,14 +25,15 @@ jobs:
 
     - name: Create Basic DMG
       run: |
-        cp WordSearchCreator.app/ WordSearchCreator1.2/
-        hdiutil create -volname "WordSearchCreator 1.2" -srcfolder WordSearchCreator1.2 -ov -format UDZO WordSearchCreator1.2.dmg
+        mkdir WordSearchCreator-1.2-Basic/
+        cp WordSearchCreator.app/ WordSearchCreator-1.2-Basic/WordSearchCreator.app/
+        hdiutil create -volname "WordSearchCreator 1.2" -srcfolder WordSearchCreator-1.2-Basic -ov -format UDZO WordSearchCreator-1.2-Basic.dmg
 
     - name: Archive Basic DMG
       uses: actions/upload-artifact@v4
       with:
        name: dmg
-       path: WordSearchCreator1.2.dmg
+       path: WordSearchCreator-1.2-Basic.dmg
 
     - name: Create Deployable App Bundle
       run: |
@@ -40,11 +41,12 @@ jobs:
 
     - name: Create Deployable DMG
       run: |
-        mv WordSearchCreator.app/ WordSearchCreator1.2/
-        hdiutil create -volname "WordSearchCreator 1.2" -srcfolder WordSearchCreator1.2 -ov -format UDZO WordSearchCreator1.2.dmg
+        mkdir WordSearchCreator-1.2/
+        cp WordSearchCreator.app/ WordSearchCreator-1.2/WordSearchCreator.app/
+        hdiutil create -volname "WordSearchCreator 1.2" -srcfolder WordSearchCreator-1.2 -ov -format UDZO WordSearchCreator-1.2.dmg
 
     - name: Archive Deployable DMG
       uses: actions/upload-artifact@v4
       with:
        name: dmg
-       path: WordSearchCreator1.2.dmg
+       path: WordSearchCreator-1.2.dmg
