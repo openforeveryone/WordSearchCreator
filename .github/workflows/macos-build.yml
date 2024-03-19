@@ -27,7 +27,7 @@ jobs:
       run: |
         mkdir WordSearchCreator-1.2-Basic/
         mkdir WordSearchCreator-1.2-Basic/WordSearchCreator.app/
-        cp WordSearchCreator.app/ WordSearchCreator-1.2-Basic/WordSearchCreator.app/
+        cp -r WordSearchCreator.app/ WordSearchCreator-1.2-Basic/WordSearchCreator.app/
         hdiutil create -volname "WordSearchCreator 1.2" -srcfolder WordSearchCreator-1.2-Basic -ov -format UDZO WordSearchCreator-1.2-Basic.dmg
 
     - name: Archive Basic DMG
@@ -44,7 +44,7 @@ jobs:
       run: |
         mkdir WordSearchCreator-1.2/
         mkdir WordSearchCreator-1.2/WordSearchCreator.app/
-        cp WordSearchCreator.app/ WordSearchCreator-1.2/WordSearchCreator.app/
+        cp -r WordSearchCreator.app/ WordSearchCreator-1.2/WordSearchCreator.app/
         hdiutil create -volname "WordSearchCreator 1.2" -srcfolder WordSearchCreator-1.2 -ov -format UDZO WordSearchCreator-1.2.dmg
 
     - name: Archive Deployable DMG
