@@ -51,6 +51,7 @@ jobs:
 
     - name: Create Deployable DMG
       run: |
+        mv WordSearchCreator-Staging/WordSearchCreator.app/ WordSearchCreator-Staging/Word\ Search\ Creator.app/
         mkdir WordSearchCreator-Staging/.background
         cp images/background.png WordSearchCreator-Staging/.background/
         hdiutil create -volname "WordSearchCreator" -srcfolder WordSearchCreator-Staging -ov -format UDRW WordSearchCreator-RW.dmg
