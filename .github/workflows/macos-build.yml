@@ -30,27 +30,29 @@ jobs:
 
     - name: Create Basic DMG
       run: |
-        mkdir WordSearchCreator-1.2-Basic/
-        mkdir WordSearchCreator-1.2-Basic/WordSearchCreator.app/
-        cp -r WordSearchCreator.app/ WordSearchCreator-1.2-Basic/WordSearchCreator.app/
-        hdiutil create -volname "WordSearchCreator 1.2" -srcfolder WordSearchCreator-1.2-Basic -ov -format UDZO WordSearchCreator-1.2-Basic.dmg
+        mkdir WordSearchCreator-Staging/
+        mkdir WordSearchCreator-Staging/WordSearchCreator.app/
+        cp -r WordSearchCreator.app/ WordSearchCreator-Staging-Basic/WordSearchCreator.app/
+        hdiutil create -volname "WordSearchCreator" -srcfolder WordSearchCreator-Staging -ov -format UDZO WordSearchCreator-Basic.dmg
 
     - name: Archive Basic DMG
       uses: actions/upload-artifact@v4
       with:
        name: basic-dmg
-       path: WordSearchCreator-1.2-Basic.dmg
+       path: WordSearchCreator-Basic.dmg
 
     - name: Create Deployable App Bundle
       run: |
-        macdeployqt WordSearchCreator.app
+        macdeployqt WordSearchCreator.app -verbose=1
 
     - name: Create Deployable DMG
       run: |
-        mkdir WordSearchCreator-1.2/
-        mkdir WordSearchCreator-1.2/WordSearchCreator.app/
-        cp -r WordSearchCreator.app/ WordSearchCreator-1.2/WordSearchCreator.app/
-        hdiutil create -volname "WordSearchCreator 1.2" -srcfolder WordSearchCreator-1.2 -ov -format UDZO WordSearchCreator-1.2.dmg
+        mkdir WordSearchCreator-Staging/.background
+        cp images/background.png WordSearchCreator-Staging/.background/
+        hdiutil create -volname "WordSearchCreator" -srcfolder WordSearchCreator-Staging -ov -format UDRW WordSearchCreator-RW.dmg
+        open WordSearchCreator.dmg
+        hdiutil detach /Volumes/WordSearchCreator/
+        hdiutil convert WordSearchCreator-RW.dmg -format UDZO -o WordSearchCreator.dmg
 
     - name: Archive Deployable DMG
       uses: actions/upload-artifact@v4
