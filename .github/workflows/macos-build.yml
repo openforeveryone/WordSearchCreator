@@ -55,6 +55,7 @@ jobs:
         cp images/background.png WordSearchCreator-Staging/.background/
         hdiutil create -volname "WordSearchCreator" -srcfolder WordSearchCreator-Staging -ov -format UDRW WordSearchCreator-RW.dmg
         hdiutil attach WordSearchCreator-RW.dmg
+        osascript setupDMGAppearance.applescript
         hdiutil detach /Volumes/WordSearchCreator/
         hdiutil convert WordSearchCreator-RW.dmg -format UDZO -o WordSearchCreator.dmg
 
