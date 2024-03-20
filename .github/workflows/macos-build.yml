@@ -46,6 +46,8 @@ jobs:
         macdeployqt WordSearchCreator-Staging/WordSearchCreator.app -verbose=2
         cp images/*.icns WordSearchCreator-Staging/WordSearchCreator.app/Contents/Resources/
         cp Info.plist WordSearchCreator-Staging/WordSearchCreator.app/Contents/
+        mkdir WordSearchCreator-Staging/WordSearchCreator.app/Contents/Resources/fonts
+        cp fonts/*.ttf WordSearchCreator-Staging/WordSearchCreator.app/Contents/Resources/fonts
 
     - name: Create Deployable DMG
       run: |
