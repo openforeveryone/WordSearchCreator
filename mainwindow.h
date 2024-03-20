@@ -50,6 +50,7 @@ private:
     QActionGroup *windowselectorGroup;
     QAction *thisWindowAction; //The action that represents this window.
     QList<QAction*> actionsDisableOnMinimise;
+    QAction *clearPlayAnswersAction;
     bool event(QEvent *event);
 
 private slots:

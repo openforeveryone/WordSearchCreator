@@ -52,7 +52,14 @@ MainWindow::MainWindow(WordSearchDoc *wsdoc, QWidget *parent)
     SetupWindow();
     wsc->setWordSearchDoc(this->wsdoc);
     if (wsdoc==0)
-        wsc->SetupTemplate();
+    wsc->SetupTemplate();
+    uint i = 0;
+    while (i < this->wsdoc->ws->wordlist.size())
+    {
+        if (this->wsdoc->ws->wordlist[i].used!=0 && this->wsdoc->ws->wordlist[i].answered==true)
+            clearPlayAnswersAction->setEnabled(true);
+        i++;
+    }
 }
 
 void MainWindow::SetupWindow()
@@ -182,10 +189,10 @@ void MainWindow::SetupWindow()
     //allowplay->setCheckable(true);
     //allowplay->setChecked(true);
     //connect(allowplay, SIGNAL(toggled(bool)), wsdraw, SLOT(setAllowPlay(bool)));
-    QAction *clearplayanswers = new QAction(tr("Clear answers"), this);
-    clearplayanswers->setEnabled(false);
-    connect(clearplayanswers, SIGNAL(triggered()), wsdraw, SLOT(clearPlayAnswers()));
-    connect(wsdraw, SIGNAL(someAnswerdChanged(bool)), clearplayanswers, SLOT(setEnabled(bool)));
+    clearPlayAnswersAction = new QAction(tr("Clear answers"), this);
+    clearPlayAnswersAction->setEnabled(false);
+    connect(clearPlayAnswersAction, SIGNAL(triggered()), wsdraw, SLOT(clearPlayAnswers()));
+    connect(wsdraw, SIGNAL(someAnswerdChanged(bool)), clearPlayAnswersAction, SLOT(setEnabled(bool)));
     QAction *alphabetAct = new QAction(tr("Fill Alphabet..."), this);
     connect(alphabetAct, SIGNAL(triggered()), wsc, SLOT(alphabet()));
     QActionGroup *listorderGroup = new QActionGroup(this);
@@ -358,7 +365,7 @@ void MainWindow::SetupWindow()
     QToolBar *toolbar1 = new QToolBar("Play toolbar");
     //toolbar->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
     //toolbar1->addAction(allowplay);
-    toolbar1->addAction(clearplayanswers);
+    toolbar1->addAction(clearPlayAnswersAction);
     addToolBar(toolbar1);
 #ifndef Q_OS_MAC
     QApplication::setWindowIcon(QIcon(":/icons/512x512icon.png"));
