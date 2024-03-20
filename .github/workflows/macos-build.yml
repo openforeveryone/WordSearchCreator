@@ -44,6 +44,8 @@ jobs:
     - name: Create Deployable App Bundle
       run: |
         macdeployqt WordSearchCreator-Staging/WordSearchCreator.app -verbose=2
+        cp images/*.icns WordSearchCreator-Staging/WordSearchCreator.app/Contents/Resources/
+        cp Info.plist WordSearchCreator-Staging/WordSearchCreator.app/Contents/
 
     - name: Create Deployable DMG
       run: |
