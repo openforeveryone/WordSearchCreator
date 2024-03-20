@@ -43,7 +43,7 @@ jobs:
 
     - name: Create Deployable App Bundle
       run: |
-        macdeployqt WordSearchCreator.app -verbose=1
+        macdeployqt WordSearchCreator-Staging/WordSearchCreator.app -verbose=2
 
     - name: Create Deployable DMG
       run: |
