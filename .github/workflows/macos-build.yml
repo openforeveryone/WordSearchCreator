@@ -32,7 +32,7 @@ jobs:
       run: |
         mkdir WordSearchCreator-Staging/
         mkdir WordSearchCreator-Staging/WordSearchCreator.app/
-        cp -r WordSearchCreator.app/ WordSearchCreator-Staging-Basic/WordSearchCreator.app/
+        cp -r WordSearchCreator.app/ WordSearchCreator-Staging/WordSearchCreator.app/
         hdiutil create -volname "WordSearchCreator" -srcfolder WordSearchCreator-Staging -ov -format UDZO WordSearchCreator-Basic.dmg
 
     - name: Archive Basic DMG
