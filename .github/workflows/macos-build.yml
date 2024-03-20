@@ -50,7 +50,7 @@ jobs:
         mkdir WordSearchCreator-Staging/.background
         cp images/background.png WordSearchCreator-Staging/.background/
         hdiutil create -volname "WordSearchCreator" -srcfolder WordSearchCreator-Staging -ov -format UDRW WordSearchCreator-RW.dmg
-        open WordSearchCreator.dmg
+        open WordSearchCreator-RW.dmg
         hdiutil detach /Volumes/WordSearchCreator/
         hdiutil convert WordSearchCreator-RW.dmg -format UDZO -o WordSearchCreator.dmg
 
