@@ -58,4 +58,4 @@ jobs:
       uses: actions/upload-artifact@v4
       with:
        name: deployable-dmg
-       path: WordSearchCreator-1.2.dmg
+       path: WordSearchCreator.dmg
