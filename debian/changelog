@@ -1,0 +1,13 @@
+wordsearchcreator (1.2) unstable; urgency=low
+
+  * Now uses Qt5
+
+ -- Matt <info@openforeveryone.co.uk>  Mon, 1 Apr 2024 19:18:45 +0100
+ 
+wordsearchcreator (1.1) stable; urgency=low
+
+  * Initial debian package release
+
+ -- Matt <info@openforeveryone.co.uk>  Thu, 18 Jul 2013 14:55:35 +0100
+ 
+ 

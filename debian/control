@@ -1,0 +1,25 @@
+Source: wordsearchcreator
+Maintainer: Matt <info@openforeveryone.co.uk>
+Homepage: http://www.wordsearchcreator.org
+Build-Depends: debhelper-compat (= 12)
+Standards-Version: 4.6.2
+
+Package: wordsearchcreator
+Architecture: amd64
+Section: misc
+Priority: optional
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: Word Search Creator is an open-source word search worksheet creator.
+ Word Search Creator an open-source wysiwyg word search worksheet creator avalible for Linux, Mac and Windows.
+ - Play on screen.
+ - One click shuffle words.
+ - Choose the directions of the words.
+ - Set the size and shape of your word search.
+ - Use Auto-enlarge to guarantee all words will fit.
+ - Use the word list creator to take words from text.
+ - Export to .pdf
+ - SVG export.
+ - Copy as image (paste into word processor etc...)
+ - Unicode (multi-language) support
+ - Custom fill alphabet.
+ - Set word list order.
