@@ -1,0 +1,26 @@
+name: Ubuntu Deb Package Build
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-20.04
+    
+    steps:
+    - name: Install prerequisites
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y qt5-default libqt5svg5-dev
+    - uses: actions/checkout@v3
+    - name: debuild
+      run: debuild -us -uc
+    - name: Archive compiled binary
+      uses: actions/upload-artifact@v4
+      with:
+       name: deb
+       path: ../wordsearchcreator_1.2_amd64.deb
