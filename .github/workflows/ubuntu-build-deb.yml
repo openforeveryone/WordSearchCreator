@@ -23,4 +23,4 @@ jobs:
       uses: actions/upload-artifact@v4
       with:
        name: deb
-       path: /home/runner/work/wordsearchcreator_1.2_amd64.deb
+       path: /home/runner/work/WordSearchCreator/wordsearchcreator_1.2_amd64.deb
