@@ -1,3 +1,9 @@
+wordsearchcreator (1.2.1) unstable; urgency=low
+
+  * Minor bug fixes
+
+ -- Matt <info@openforeveryone.co.uk>  Tue, 9 Apr 2024 08:11:35 +0100
+
 wordsearchcreator (1.2) unstable; urgency=low
 
   * Now uses Qt5

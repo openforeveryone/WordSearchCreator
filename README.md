@@ -13,8 +13,14 @@ Qt5
 Please refer to [INSTALL](INSTALL) file
 
 ## Changes:
-### Latest:
-* Now compiles with Qt5
+
+### Version 1.2.1:
+* Minor bug fixes
+
+### Version 1.2:
+* Now compiles with Qt5 (needed for 64Bit Macs)
+* Improved window behaviour on macOS
+* Fixed bug causing Control Box to disappear when restoring window.
 
 ### Version 1.1:
 * Fix initial zoom bug.

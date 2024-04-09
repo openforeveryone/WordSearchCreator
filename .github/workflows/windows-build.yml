@@ -74,5 +74,4 @@ jobs:
       uses: actions/upload-artifact@v4
       with:
        name: installer
-       path: dist/Word Search Creator 1.2 Installer.exe
-         
+       path: dist/Word Search Creator Installer.exe

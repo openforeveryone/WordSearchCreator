@@ -16,8 +16,8 @@
 ;General
 
   ;Name and file
-  Name "Word Search Creator"
-  OutFile "Word Search Creator 1.2 Installer.exe"
+  Name "Word Search Creator 1.2.1"
+  OutFile "Word Search Creator Installer.exe"
 
   ;Default installation folder
   InstallDir "$PROGRAMFILES64\Word Search Creator"
@@ -95,7 +95,7 @@ Section "Dummy Section" SecDummy
   WriteUninstaller "$INSTDIR\Uninstall.exe"
 
   ; Write the uninstall keys for Windows
-  WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\Word Search Creator" "DisplayName" "Word Search Creator 1.2"
+  WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\Word Search Creator" "DisplayName" "Word Search Creator 1.2.1"
   WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\Word Search Creator" "UninstallString" '"$INSTDIR\uninstall.exe"'
   WriteRegDWORD HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\Word Search Creator" "NoModify" 1
   WriteRegDWORD HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\Word Search Creator" "NoRepair" 1
