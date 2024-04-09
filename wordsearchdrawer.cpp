@@ -339,12 +339,18 @@ void WordSearchDrawer::wheelEvent(QWheelEvent *event)
 
 void WordSearchDrawer::clearPlayAnswers()
 {
+    bool changed = false;
     for (uint i = 0; i < doc->ws->wordlist.size(); i++)
     {
+        if (doc->ws->wordlist[i].answered) changed = true;
         doc->ws->wordlist[i].answered=false;
     }
-    emit someAnswerdChanged(false);
-    repaint();
+    if (changed)
+    {
+        doc->setEditedState(true);
+        emit someAnswerdChanged(false);
+        repaint();
+    }
 }
 
 void WordSearchDrawer::Print()
