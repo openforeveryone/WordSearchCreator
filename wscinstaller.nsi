@@ -16,22 +16,17 @@
 ;General
 
   ;Name and file
-  Name "Word Search Creator 1.2.1"
+  Name "Word Search Creator"
   OutFile "Word Search Creator Installer.exe"
 
   ;Default installation folder
   InstallDir "$PROGRAMFILES64\Word Search Creator"
   
   ;Get installation folder from registry if available
-  InstallDirRegKey HKCU "Software\Word Search Creator" ""
+  InstallDirRegKey HKLM "Software\OpenForEveryone\Word Search Creator" "InstallDir"
 
   ;Request application privileges for Windows Vista
   RequestExecutionLevel none
-
-;--------------------------------
-;Variables
-
-  Var StartMenuFolder
 
 ;--------------------------------
 ;Interface Settings
@@ -43,13 +38,6 @@
 
   !insertmacro MUI_PAGE_LICENSE "COPYING"
   !insertmacro MUI_PAGE_DIRECTORY
-  
-  ;Start Menu Folder Page Configuration
-  !define MUI_STARTMENUPAGE_REGISTRY_ROOT "HKCU" 
-  !define MUI_STARTMENUPAGE_REGISTRY_KEY "Software\Word Search Creator" 
-  !define MUI_STARTMENUPAGE_REGISTRY_VALUENAME "Start Menu Folder"
-  
-  !insertmacro MUI_PAGE_STARTMENU Application $StartMenuFolder
   
   !insertmacro MUI_PAGE_INSTFILES
   !insertmacro MUI_PAGE_FINISH
@@ -64,10 +52,45 @@
 
 ;--------------------------------
 ;Installer Sections
-
 Section "Dummy Section" SecDummy
 
+  ;remove files from old versions
+  ;Get old installation folder (for versions prior to 1.2 which were 32bit) from registry
+  Var /GLOBAL OLDINSTDIR
+  Var /GLOBAL OldStartMenuFolder
+  ReadRegStr $OLDINSTDIR HKCU "Software\Word Search Creator" ""
+  ReadRegStr $OldStartMenuFolder HKCU "Software\Word Search Creator" "Start Menu Folder"
+  ${If} ${Errors}
+    DetailPrint "No old 32bit install found"
+  ${Else}
+    DetailPrint "Old 32bit install found at: $OLDINSTDIR, removing it."
+    Delete "$OLDINSTDIR\Uninstall.exe"
+    Delete "$OLDINSTDIR\COPYING"
+    Delete "$OLDINSTDIR\Word Search Creator.exe"
+    Delete "$OLDINSTDIR\libgcc_s_dw2-1.dll"
+    Delete "$OLDINSTDIR\mingwm10.dll"
+    Delete "$OLDINSTDIR\QtCore4.dll"
+    Delete "$OLDINSTDIR\QtGui4.dll"
+    Delete "$OLDINSTDIR\QtNetwork4.dll"
+    Delete "$OLDINSTDIR\QtSvg4.dll"
+    Delete "$OLDINSTDIR\QtXml4.dll"
+    Delete "$OLDINSTDIR\Readme.txt"
+    Delete "$OLDINSTDIR\Uninstall.exe"
+    Delete "$OLDINSTDIR\URWGothicL-Book.ttf"
+    RMDir "$OLDINSTDIR"
+    Delete "$SMPROGRAMS\$OldStartMenuFolder\Word Search Creator.lnk"
+    Delete "$SMPROGRAMS\$OldStartMenuFolder\Uninstall Word Search Creator.lnk"
+    Delete "$SMPROGRAMS\$OldStartMenuFolder\Word Search Creator Website.lnk"
+    Delete "$SMPROGRAMS\$OldStartMenuFolder\Readme.lnk"
+    RMDir "$SMPROGRAMS\$StartMenuFolder"
+    DeleteRegValue HKCU "Software\Word Search Creator" ""
+    DeleteRegValue HKCU "Software\Word Search Creator" "Start Menu Folder"
+    DeleteRegKey /ifempty HKCU "Software\Word Search Creator"
+  ${EndIf}
+
   SetOutPath "$INSTDIR"
+
+  SetDetailsView show
   
   File "COPYING"
   File "Word Search Creator.exe"
@@ -82,6 +105,7 @@ Section "Dummy Section" SecDummy
   File "libstdc++-6.dll"
   File "libwinpthread-1.dll"
   File "URWGothicL-Book.ttf"
+  File "README.md"
 
   SetOutPath "$INSTDIR\plugins\platforms"
   File "qwindows.dll"
@@ -89,26 +113,25 @@ Section "Dummy Section" SecDummy
   File "qwindowsvistastyle.dll"
   
   ;Store installation folder
-  WriteRegStr HKCU "Software\Word Search Creator" "" $INSTDIR
+  WriteRegStr HKLM "Software\OpenForEveryone\Word Search Creator" "InstallDir" $INSTDIR
   
   ;Create uninstaller
   WriteUninstaller "$INSTDIR\Uninstall.exe"
 
   ; Write the uninstall keys for Windows
-  WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\Word Search Creator" "DisplayName" "Word Search Creator 1.2.1"
+  WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\Word Search Creator" "DisplayName" "Word Search Creator"
   WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\Word Search Creator" "UninstallString" '"$INSTDIR\uninstall.exe"'
+  WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\Word Search Creator" "Publisher" "Matthew Wellings"
+  WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\Word Search Creator" "DisplayIcon" "$INSTDIR\Word Search Creator.exe,0"
+  WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\Word Search Creator" "InstallLocation" "$INSTDIR"
+  WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\Word Search Creator" "Version" "1.2.1"
+  WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\Word Search Creator" "DisplayVersion" "1.2.1"
+  WriteRegDWORD HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\Word Search Creator" "EstimatedSize" 35738
   WriteRegDWORD HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\Word Search Creator" "NoModify" 1
   WriteRegDWORD HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\Word Search Creator" "NoRepair" 1
-  
-  !insertmacro MUI_STARTMENU_WRITE_BEGIN Application
     
-    ;Create shortcuts
-    CreateDirectory "$SMPROGRAMS\$StartMenuFolder"
-    CreateShortCut "$SMPROGRAMS\$StartMenuFolder\Word Search Creator.lnk" "$INSTDIR\Word Search Creator.exe"
-    CreateShortCut "$SMPROGRAMS\$StartMenuFolder\Uninstall Word Search Creator.lnk" "$INSTDIR\Uninstall.exe"
-    CreateShortCut "$SMPROGRAMS\$StartMenuFolder\Word Search Creator Website.lnk" "http://wsc.sf.net"
-  
-  !insertmacro MUI_STARTMENU_WRITE_END
+  ;Create shortcuts
+  CreateShortCut "$SMPROGRAMS\Word Search Creator.lnk" "$INSTDIR\Word Search Creator.exe"
 
   ${registerExtension}  "$INSTDIR\Word Search Creator.exe" ".wordsearch" "Word Search Worksheet File"
   ${registerExtension}  "$INSTDIR\Word Search Creator.exe" ".wsh" "Word Search Worksheet File"
@@ -150,24 +173,19 @@ Section "Uninstall"
   Delete "$INSTDIR\libstdc++-6.dll"
   Delete "$INSTDIR\libwinpthread-1.dll"
   Delete "$INSTDIR\URWGothicL-Book.ttf"
+  Delete "$INSTDIR\README.md"
 
   RMDir "$INSTDIR\plugins\platforms"
   RMDir "$INSTDIR\plugins\styles"
   RMDir "$INSTDIR\plugins"
   RMDir "$INSTDIR"
-  
-  !insertmacro MUI_STARTMENU_GETFOLDER Application $StartMenuFolder
-    
-  Delete "$SMPROGRAMS\$StartMenuFolder\Word Search Creator.lnk"
-  Delete "$SMPROGRAMS\$StartMenuFolder\Uninstall Word Search Creator.lnk"
-  Delete "$SMPROGRAMS\$StartMenuFolder\Word Search Creator Website.lnk"
-  RMDir "$SMPROGRAMS\$StartMenuFolder"
-  
-  DeleteRegKey /ifempty HKCU "Software\Word Search Creator"
+
+  Delete "$SMPROGRAMS\Word Search Creator.lnk"
 
   DeleteRegKey HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\Word Search Creator"
-  DeleteRegKey /ifempty HKCU "Software\Word Search Creator"
-
+  DeleteRegValue HKLM "Software\OpenForEveryone\Word Search Creator" "InstallDir"
+  DeleteRegKey /ifempty HKLM "Software\OpenForEveryone\Word Search Creator"
+  DeleteRegKey /ifempty HKLM "Software\OpenForEveryone"
 
   ${unregisterExtension} ".wordsearch" "Word Search Worksheet File"
   ${unregisterExtension} ".wsh" "Word Search Worksheet File"

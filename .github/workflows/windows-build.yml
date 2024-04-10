@@ -40,6 +40,7 @@ jobs:
          mkdir dist\plugins\platforms\
          mkdir dist\plugins\styles\
          cp COPYING .\dist\
+         cp README.md .\dist\
          cp .\release\wordsearchcreator.exe .\dist\Word` Search` Creator.exe
          cp ..\Qt\5.15.2\mingw81_64\bin\Qt5Gui.dll .\dist\
          cp ..\Qt\5.15.2\mingw81_64\bin\Qt5Core.dll .\dist\
