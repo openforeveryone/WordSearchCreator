@@ -131,6 +131,7 @@ Section "Dummy Section" SecDummy
   WriteRegDWORD HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\Word Search Creator" "NoRepair" 1
     
   ;Create shortcuts
+  SetShellVarContext all
   CreateShortCut "$SMPROGRAMS\Word Search Creator.lnk" "$INSTDIR\Word Search Creator.exe"
 
   ${registerExtension}  "$INSTDIR\Word Search Creator.exe" ".wordsearch" "Word Search Worksheet File"
@@ -180,6 +181,7 @@ Section "Uninstall"
   RMDir "$INSTDIR\plugins"
   RMDir "$INSTDIR"
 
+  SetShellVarContext all
   Delete "$SMPROGRAMS\Word Search Creator.lnk"
 
   DeleteRegKey HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\Word Search Creator"
