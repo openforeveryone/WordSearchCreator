@@ -32,17 +32,14 @@ class PageLayoutDialog: public QDialog, private Ui::LayoutDialog
 
 public:
     PageLayoutDialog(QWidget *parent = 0);
-    struct PaperSize {
-        int width, height;
-    };
-    static PaperSize paperSize(QPageSize pageSize);
+    static QRectF paperSize(QPageSize::PageSizeId pageSize);
     double PageWidth() {return widthSpinBox->value();}
     double PageHeight() {return heightSpinBox->value();}
     double MarginTop(){return topSpinBox->value();}
     double MarginLeft(){return leftSpinBox->value();}
     double MarginRight(){return rightSpinBox->value();}
     double MarginBottom(){return bottomSpinBox->value();}
-    QPageSize qpps() {return static_cast<QPageSize::PageSizeId>(pagesizecombo->itemData(pagesizecombo->currentIndex()).toInt());}
+    QPageSize::PageSizeId qpps() {return static_cast<QPageSize::PageSizeId>(pagesizecombo->itemData(pagesizecombo->currentIndex()).toInt());}
 
 private:
     void populatePaperSizes(QComboBox* cb);
