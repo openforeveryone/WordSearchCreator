@@ -20,7 +20,7 @@
 #include <QFileDialog>
 #include <QString>
 #include <QTextBlock>
-#include <QTextCodec>
+//#include <QTextCodec>
 #include <QDesktopServices>
 
 #include "listcreator.h"
@@ -73,14 +73,14 @@ bool listCreator::load(const QString &f)
         return false;
 
     QByteArray data = file.readAll();
-    QTextCodec *codec = Qt::codecForHtml(data);
-    QString str = codec->toUnicode(data);
-    if (Qt::mightBeRichText(str)) {
-        sourceTextEdit->setHtml(str);
-    } else {
-        str = QString::fromLocal8Bit(data);
-        sourceTextEdit->setPlainText(str);
-    }
+//    QTextCodec *codec = Qt::codecForHtml(data);
+//    QString str = codec->toUnicode(data);
+//    if (Qt::mightBeRichText(str)) {
+//        sourceTextEdit->setHtml(str);
+//    } else {
+//        str = QString::fromLocal8Bit(data);
+//        sourceTextEdit->setPlainText(str);
+//    }
     return true;
 }
 

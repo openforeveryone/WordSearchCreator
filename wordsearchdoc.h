@@ -58,7 +58,7 @@ public:
     double topMargin, leftMargin, rightMargin, bottomMargin;
     double pagewidth;
     double pageheight;
-    QPrinter::PageSize qpps;
+    QPageSize pageSize;
     int Open(QString fileName);
     bool saveToIO(QIODevice &file);
     QString filename;

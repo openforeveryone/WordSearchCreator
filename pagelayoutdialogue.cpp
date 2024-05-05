@@ -51,7 +51,7 @@ PageLayoutDialog::PageLayoutDialog(QWidget *parent)
     connect(pagesizecombo, SIGNAL(currentIndexChanged(int)), this, SLOT(PageSizeComboChanged(int)));
     //widthSpinBox->setValue(20);
     //heightSpinBox->setValue(10);
-    pagesizecombo->setCurrentIndex(pagesizecombo->findData(QPrinter::A4));
+    pagesizecombo->setCurrentIndex(pagesizecombo->findData(QPageSize::A4));
     topSpinBox->setValue(1);
     rightSpinBox->setValue(1);
     bottomSpinBox->setValue(1);
@@ -70,12 +70,12 @@ void PageLayoutDialog::PageSizeChanged()
     rightSpinBox->setMaximum(widthSpinBox->value()-(leftSpinBox->value()+0.1));
     bottomSpinBox->setMaximum(heightSpinBox->value()-(topSpinBox->value()+0.1));
     leftSpinBox->setMaximum(widthSpinBox->value()-(rightSpinBox->value()+0.1));
-    int index = pagesizecombo->findData(QPrinter::Custom);
-    for (int a = 0; a < QPrinter::NPageSize; a++)
+    int index = pagesizecombo->findData(QPageSize::Custom);
+    for (int a = 0; a < QPageSize::Custom; a++)
     {
-        if(((PageLayoutDialog::paperSize(static_cast<QPrinter::PageSize>(a)).width==qRound(widthSpinBox->value()*72.0))&&(PageLayoutDialog::paperSize(static_cast<QPrinter::PageSize>(a)).height==qRound(heightSpinBox->value()*72.0)))||((PageLayoutDialog::paperSize(static_cast<QPrinter::PageSize>(a)).width==qRound(heightSpinBox->value()*72.0))&&(PageLayoutDialog::paperSize(static_cast<QPrinter::PageSize>(a)).height==qRound(widthSpinBox->value()*72.0))))
+        if(((PageLayoutDialog::paperSize(static_cast<QPageSize::PageSizeId>(a)).width==qRound(widthSpinBox->value()*72.0))&&(PageLayoutDialog::paperSize(static_cast<QPageSize::PageSizeId>(a)).height==qRound(heightSpinBox->value()*72.0)))||((PageLayoutDialog::paperSize(static_cast<QPageSize::PageSizeId>(a)).width==qRound(heightSpinBox->value()*72.0))&&(PageLayoutDialog::paperSize(static_cast<QPageSize::PageSizeId>(a)).height==qRound(widthSpinBox->value()*72.0))))
         {
-            index=(pagesizecombo->findData(static_cast<QPrinter::PageSize>(a)));
+            index=(pagesizecombo->findData(static_cast<QPageSize::PageSizeId>(a)));
         }
     }
     pagesizecombo->setCurrentIndex(index);
@@ -89,8 +89,8 @@ void PageLayoutDialog::MarginChanged()
 void PageLayoutDialog::PageSizeComboChanged(int index)
 {
     PageLayoutDialog::PaperSize ps;
-    QPrinter::PageSize qpps = static_cast<QPrinter::PageSize>(pagesizecombo->itemData(index).toInt());
-    if (qpps == QPrinter::Custom)
+    QPageSize::PageSizeId qpps = static_cast<QPageSize::PageSizeId>(pagesizecombo->itemData(index).toInt());
+    if (qpps == QPageSize::PageSizeId::Custom)
         return;
     ps = PageLayoutDialog::paperSize(qpps);
     if (portraitRB->isChecked()==true)
@@ -197,7 +197,7 @@ void PageLayoutView::setMarginBottom(double Height)
 #define Q_MM(n) int((n * 720 + 127) / 254)
 #define Q_IN(n) int(n * 72)
 
-static const PageLayoutDialog::PaperSize paperSizes[QPrinter::NPageSize] =
+static const PageLayoutDialog::PaperSize paperSizes[QPageSize::PageSizeId::Custom] =
 {
     {  Q_MM(210), Q_MM(297) },      // A4
     {  Q_MM(176), Q_MM(250) },      // B5
@@ -233,40 +233,39 @@ static const PageLayoutDialog::PaperSize paperSizes[QPrinter::NPageSize] =
 
 void PageLayoutDialog::populatePaperSizes(QComboBox* cb)
 {
-    cb->addItem(QPrintDialog::tr("A0 (841 x 1189 mm)"), QPrinter::A0);
-    cb->addItem(QPrintDialog::tr("A1 (594 x 841 mm)"), QPrinter::A1);
-    cb->addItem(QPrintDialog::tr("A2 (420 x 594 mm)"), QPrinter::A2);
-    cb->addItem(QPrintDialog::tr("A3 (297 x 420 mm)"), QPrinter::A3);
-    cb->addItem(QPrintDialog::tr("A4 (210 x 297 mm)"), QPrinter::A4);
-    cb->addItem(QPrintDialog::tr("A5 (148 x 210 mm)"), QPrinter::A5);
-    cb->addItem(QPrintDialog::tr("A6 (105 x 148 mm)"), QPrinter::A6);
-    cb->addItem(QPrintDialog::tr("A7 (74 x 105 mm)"), QPrinter::A7);
-    cb->addItem(QPrintDialog::tr("A8 (52 x 74 mm)"), QPrinter::A8);
-    cb->addItem(QPrintDialog::tr("A9 (37 x 52 mm)"), QPrinter::A9);
-    cb->addItem(QPrintDialog::tr("B0 (1000 x 1414 mm)"), QPrinter::B0);
-    cb->addItem(QPrintDialog::tr("B1 (707 x 1000 mm)"), QPrinter::B1);
-    cb->addItem(QPrintDialog::tr("B2 (500 x 707 mm)"), QPrinter::B2);
-    cb->addItem(QPrintDialog::tr("B3 (353 x 500 mm)"), QPrinter::B3);
-    cb->addItem(QPrintDialog::tr("B4 (250 x 353 mm)"), QPrinter::B4);
-    cb->addItem(QPrintDialog::tr("B5 (176 x 250 mm)"), QPrinter::B5);
-    cb->addItem(QPrintDialog::tr("B6 (125 x 176 mm)"), QPrinter::B6);
-    cb->addItem(QPrintDialog::tr("B7 (88 x 125 mm)"), QPrinter::B7);
-    cb->addItem(QPrintDialog::tr("B8 (62 x 88 mm)"), QPrinter::B8);
-    cb->addItem(QPrintDialog::tr("B9 (44 x 62 mm)"), QPrinter::B9);
-    cb->addItem(QPrintDialog::tr("B10 (31 x 44 mm)"), QPrinter::B10);
-    cb->addItem(QPrintDialog::tr("C5E (163 x 229 mm)"), QPrinter::C5E);
-    cb->addItem(QPrintDialog::tr("DLE (110 x 220 mm)"), QPrinter::DLE);
-    cb->addItem(QPrintDialog::tr("Executive (191 x 254 mm)"), QPrinter::Executive);
-    cb->addItem(QPrintDialog::tr("Folio (210 x 330 mm)"), QPrinter::Folio);
-    cb->addItem(QPrintDialog::tr("Ledger (432 x 279 mm)"), QPrinter::Ledger);
-    cb->addItem(QPrintDialog::tr("Legal (216 x 356 mm)"), QPrinter::Legal);
-    cb->addItem(QPrintDialog::tr("Letter (216 x 279 mm)"), QPrinter::Letter);
-    cb->addItem(QPrintDialog::tr("Tabloid (279 x 432 mm)"), QPrinter::Tabloid);
-    //    cb->addItem(QPrintDialog::tr("US Common #10 Envelope (105 x 241 mm)"), QPrinter::Comm10E);
-    cb->addItem(QPrintDialog::tr("Custom"), QPrinter::Custom);
+    cb->addItem(QPrintDialog::tr("A0 (841 x 1189 mm)"), QPageSize::A0);
+    cb->addItem(QPrintDialog::tr("A1 (594 x 841 mm)"), QPageSize::A1);
+    cb->addItem(QPrintDialog::tr("A2 (420 x 594 mm)"), QPageSize::A2);
+    cb->addItem(QPrintDialog::tr("A3 (297 x 420 mm)"), QPageSize::A3);
+    cb->addItem(QPrintDialog::tr("A4 (210 x 297 mm)"), QPageSize::A4);
+    cb->addItem(QPrintDialog::tr("A5 (148 x 210 mm)"), QPageSize::A5);
+    cb->addItem(QPrintDialog::tr("A6 (105 x 148 mm)"), QPageSize::A6);
+    cb->addItem(QPrintDialog::tr("A7 (74 x 105 mm)"), QPageSize::A7);
+    cb->addItem(QPrintDialog::tr("A8 (52 x 74 mm)"), QPageSize::A8);
+    cb->addItem(QPrintDialog::tr("A9 (37 x 52 mm)"), QPageSize::A9);
+    cb->addItem(QPrintDialog::tr("B0 (1000 x 1414 mm)"), QPageSize::B0);
+    cb->addItem(QPrintDialog::tr("B1 (707 x 1000 mm)"), QPageSize::B1);
+    cb->addItem(QPrintDialog::tr("B2 (500 x 707 mm)"), QPageSize::B2);
+    cb->addItem(QPrintDialog::tr("B3 (353 x 500 mm)"), QPageSize::B3);
+    cb->addItem(QPrintDialog::tr("B4 (250 x 353 mm)"), QPageSize::B4);
+    cb->addItem(QPrintDialog::tr("B5 (176 x 250 mm)"), QPageSize::B5);
+    cb->addItem(QPrintDialog::tr("B6 (125 x 176 mm)"), QPageSize::B6);
+    cb->addItem(QPrintDialog::tr("B7 (88 x 125 mm)"), QPageSize::B7);
+    cb->addItem(QPrintDialog::tr("B8 (62 x 88 mm)"), QPageSize::B8);
+    cb->addItem(QPrintDialog::tr("B9 (44 x 62 mm)"), QPageSize::B9);
+    cb->addItem(QPrintDialog::tr("B10 (31 x 44 mm)"), QPageSize::B10);
+    cb->addItem(QPrintDialog::tr("C5E (163 x 229 mm)"), QPageSize::C5E);
+    cb->addItem(QPrintDialog::tr("DLE (110 x 220 mm)"), QPageSize::DLE);
+    cb->addItem(QPrintDialog::tr("Executive (191 x 254 mm)"), QPageSize::Executive);
+    cb->addItem(QPrintDialog::tr("Folio (210 x 330 mm)"), QPageSize::Folio);
+    cb->addItem(QPrintDialog::tr("Ledger (432 x 279 mm)"), QPageSize::Ledger);
+    cb->addItem(QPrintDialog::tr("Legal (216 x 356 mm)"), QPageSize::Legal);
+    cb->addItem(QPrintDialog::tr("Letter (216 x 279 mm)"), QPageSize::Letter);
+    cb->addItem(QPrintDialog::tr("Tabloid (279 x 432 mm)"), QPageSize::Tabloid);
+    cb->addItem(QPrintDialog::tr("Custom"), QPageSize::Custom);
 }
 
-PageLayoutDialog::PaperSize PageLayoutDialog::paperSize(QPrinter::PageSize pageSize)
+PageLayoutDialog::PaperSize PageLayoutDialog::paperSize(QPageSize pageSize)
 {
-    return paperSizes[pageSize];
+    return paperSizes[pageSize.id()];
 }

@@ -74,10 +74,10 @@ void appearanceDialog::setDoc(WordSearchDoc *wsd)
     showGridCheckBox->setChecked(wsd->getShowGrid());
 }
 
-QString appearanceDialog::fontstring(QFont font)
-{
-    return font.family()+QString(font.pointSize());
-}
+//QString appearanceDialog::fontstring(QFont font)
+//{
+//    return font.family()+QString(font.pointSize());
+//}
 
 void appearanceDialog::titleFontPressed()
 {

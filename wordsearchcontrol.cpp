@@ -324,7 +324,7 @@ void WordSearchControl::showpageLayout()
         wsd->leftMargin = pld->MarginLeft();
         wsd->rightMargin = pld->MarginRight();
         wsd->bottomMargin = pld->MarginBottom();
-        wsd->qpps = pld->qpps();
+        wsd->pageSize = pld->qpps();
         wsd->setEditedState(true);
     }
     delete pld;

@@ -433,9 +433,9 @@ void MainWindow::ShowAbout()
     QLabel *label = new QLabel(aboutDialog);
     label->setObjectName(QString::fromUtf8("label"));
     label->setPixmap(QPixmap(QString::fromUtf8(":/images/about.png")));
-    label->setGeometry(QRect(QPoint(0, 0), label->pixmap()->size()));
-    aboutDialog->setMinimumSize(QSize(label->pixmap()->size()));
-    aboutDialog->setMaximumSize(QSize(label->pixmap()->size()));
+    label->setGeometry(QRect(QPoint(0, 0), label->pixmap().size()));
+    aboutDialog->setMinimumSize(QSize(label->pixmap().size()));
+    aboutDialog->setMaximumSize(QSize(label->pixmap().size()));
     aboutDialog->setModal(true);
     aboutDialog->exec();
 }

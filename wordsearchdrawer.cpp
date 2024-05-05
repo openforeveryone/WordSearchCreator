@@ -46,7 +46,7 @@ WordSearchDrawer::WordSearchDrawer(WordSearchDoc *doc, QWidget *parent)
 void WordSearchDrawer::paintEvent(QPaintEvent *event)
 {
     event->accept();
-    stopwatch.start();
+//    stopwatch.start();
     QPainter painter(this);
     painter.scale(scale,scale);
     if (viewMode) {
@@ -116,7 +116,7 @@ void WordSearchDrawer::drawWS(QPainter *painter, int x, int y, int w, int h)
             for (uint a = 0; a < doc->ws->wordlist.size(); a++)
             {
                 if (doc->ws->wordlist.at(a).used)
-                    colwidth=qMax(colwidth,  painter->fontMetrics().width(doc->ws->wordlist.at(a).word));
+                    colwidth=qMax(colwidth,  painter->fontMetrics().boundingRect(doc->ws->wordlist.at(a).word).width());
             }
             colwidth += colwidth * 0.2;
             uint maxcols = w / colwidth;
@@ -327,7 +327,7 @@ void WordSearchDrawer::wheelEvent(QWheelEvent *event)
 {
     if (event->modifiers().testFlag(Qt::ControlModifier))
     {
-        if (event->delta()>0)
+        if (event->angleDelta().y()>0)
             zoomIn();
         else
             zoomOut();
@@ -351,14 +351,14 @@ void WordSearchDrawer::Print()
 {
     QPrinter printer;
     printer.setFullPage(true);
-    if (doc->qpps != QPrinter::Custom)
+    if (doc->pageSize != QPageSize::Custom)
     {
-        printer.setPageSize(doc->qpps);
+        printer.setPageSize(doc->pageSize);
         if (doc->pagewidth>doc->pageheight)
-            printer.setOrientation(QPrinter::Landscape);
+            printer.setPageOrientation(QPageLayout::Landscape);
     }
     else
-        printer.setPaperSize(QSizeF(doc->pagewidth, doc->pageheight),QPrinter::Inch);
+        printer.setPageSize(QPageSize(QSizeF(doc->pagewidth, doc->pageheight), QPageSize::Inch));
     QPrintDialog printDialog(&printer, this);
 
     if (printDialog.exec() == QDialog::Accepted) {
@@ -371,14 +371,14 @@ void WordSearchDrawer::DPrint()
 {
     QPrinter printer;
     printer.setFullPage(true);
-    if (doc->qpps != QPrinter::Custom)
+    if (doc->pageSize != QPageSize::Custom)
     {
-        printer.setPageSize(doc->qpps);
+        printer.setPageSize(doc->pageSize);
         if (doc->pagewidth>doc->pageheight)
-            printer.setOrientation(QPrinter::Landscape);
+            printer.setPageOrientation(QPageLayout::Landscape);
     }
     else
-        printer.setPaperSize(QSizeF(doc->pagewidth, doc->pageheight),QPrinter::Inch);
+        printer.setPageSize(QPageSize(QSizeF(doc->pagewidth, doc->pageheight), QPageSize::Inch));
     QPainter painter(&printer);
     drawWS(&painter, 0, 0, printer.width(), printer.height());
 }
@@ -415,14 +415,14 @@ void WordSearchDrawer::PDF()
     printer.setOutputFormat(QPrinter::PdfFormat);
     printer.setOutputFileName(fileName);
     printer.setFullPage(true);
-    if (doc->qpps != QPrinter::Custom)
+    if (doc->pageSize != QPageSize::Custom)
     {
-        printer.setPageSize(doc->qpps);
+        printer.setPageSize(doc->pageSize);
         if (doc->pagewidth>doc->pageheight)
-            printer.setOrientation(QPrinter::Landscape);
+            printer.setPageOrientation(QPageLayout::Landscape);
     }
     else
-        printer.setPaperSize(QSizeF(doc->pagewidth, doc->pageheight),QPrinter::Inch);
+        printer.setPageSize(QPageSize(QSizeF(doc->pagewidth, doc->pageheight), QPageSize::Inch));
     QPainter painter(&printer);
     //printer.setPageSize(QPrinter::A4);
     drawWS(&painter, 0, 0, printer.width(),printer.height());

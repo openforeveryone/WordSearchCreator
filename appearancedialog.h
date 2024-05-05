@@ -34,7 +34,7 @@ public:
 
 private:
     WordSearchDoc *wsd;
-    QString fontstring(QFont font);
+//    QString fontstring(QFont font);
     QFont titleFont;
     QFont wsFont;
     QFont wlFont;

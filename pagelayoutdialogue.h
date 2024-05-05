@@ -35,14 +35,14 @@ public:
     struct PaperSize {
         int width, height;
     };
-    static PaperSize paperSize(QPrinter::PageSize pageSize);
+    static PaperSize paperSize(QPageSize pageSize);
     double PageWidth() {return widthSpinBox->value();}
     double PageHeight() {return heightSpinBox->value();}
     double MarginTop(){return topSpinBox->value();}
     double MarginLeft(){return leftSpinBox->value();}
     double MarginRight(){return rightSpinBox->value();}
     double MarginBottom(){return bottomSpinBox->value();}
-    QPrinter::PageSize qpps() {return static_cast<QPrinter::PageSize>(pagesizecombo->itemData(pagesizecombo->currentIndex()).toInt());}
+    QPageSize qpps() {return static_cast<QPageSize::PageSizeId>(pagesizecombo->itemData(pagesizecombo->currentIndex()).toInt());}
 
 private:
     void populatePaperSizes(QComboBox* cb);

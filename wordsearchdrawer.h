@@ -55,7 +55,7 @@ private:
     bool answering;
     bool mousemoved;
     bool allowPlay;
-    QTime stopwatch;
+//    QTime stopwatch;
 //    bool firstpaint;
 
 public slots:

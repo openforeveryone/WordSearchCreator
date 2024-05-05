@@ -540,7 +540,7 @@ int WordSearchDoc::OpenFromIO(QIODevice &file)
 
 bool WordSearchDoc::saveToIO(QIODevice &file){
     QTextStream out(&file);
-    out.setCodec("UTF-8");
+    out.setEncoding(QStringConverter::Utf8);
     QDomDocument doc;
     QDomElement root = doc.createElement("WSCXML");
     doc.appendChild(root);
