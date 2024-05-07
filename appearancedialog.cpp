@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2006-2023 M Wellings                                    *
+ *   Copyright (C) 2006-2024 M Wellings                                    *
  *   info@openforeveryone.co.uk                                            *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -72,6 +72,7 @@ void appearanceDialog::setDoc(WordSearchDoc *wsd)
     gridWidth=wsd->getGridWidth();
     gridlinewidthSpinBox->setValue(gridWidth);
     showGridCheckBox->setChecked(wsd->getShowGrid());
+    outlineRadioButton->setChecked(!wsd->getHLSolid());
 }
 
 QString appearanceDialog::fontstring(QFont font)
@@ -179,6 +180,7 @@ void appearanceDialog::okPressed()
     wsd->setWordsColor(wlColor);
     wsd->setBgColor(bgColor);
     wsd->setHlColor(hlColor);
+    wsd->setHlSolid(solidRadioButton->isChecked());
     wsd->setGridColor(gridColor);
     wsd->setGridWidth(gridWidth);
     wsd->setShowGrid(showGridCheckBox->isChecked());

@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2006-2023 M Wellings                                    *
+ *   Copyright (C) 2006-2024 M Wellings                                    *
  *   info@openforeveryone.co.uk                                            *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -45,6 +45,7 @@ private:
     bool viewMode;
     void drawWS(QPainter *painter, int x, int y, int w, int h);
     void drawWordSearch(QPainter *painter);
+    void drawAnswer(QPainter *painter, int x1, int y1, int x2, int y2);
     double scale;
     int wspwidth;
     int wspheight;
@@ -56,7 +57,6 @@ private:
     bool mousemoved;
     bool allowPlay;
     QTime stopwatch;
-//    bool firstpaint;
 
 public slots:
     void Print();

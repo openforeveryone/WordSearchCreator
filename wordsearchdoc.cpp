@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2006-2023 M Wellings                                    *
+ *   Copyright (C) 2006-2024 M Wellings                                    *
  *   info@openforeveryone.co.uk                                            *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -47,6 +47,7 @@ WordSearchDoc::WordSearchDoc(QWidget *parent)
     wordlistorder=UserDefined;
     bgColor=Qt::white;
     hlColor=Qt::blue;
+    hlSolid=true;
 }
 
 void WordSearchDoc::Create()
@@ -417,6 +418,7 @@ int WordSearchDoc::OpenFromIO(QIODevice &file)
         setBgColor(BGColor);
         QColor HLColor;
         HLColor.setNamedColor(DEFormat.firstChildElement("Highlight").attribute("color", "blue"));
+        setHlSolid(DEFormat.firstChildElement("Highlight").attribute("style", "solid")!="outline");
         setHlColor(HLColor);
         setShowGrid((DEFormat.firstChildElement("Grid").attribute("Visible","yes").toLower() == "yes" || wordsearch.attribute("Visible","yes").toLower() =="true"));
         QColor GridColor;
@@ -616,6 +618,7 @@ bool WordSearchDoc::saveToIO(QIODevice &file){
     QDomElement DEHighlight = doc.createElement("Highlight");
     DEFormat.appendChild(DEHighlight);
     DEHighlight.setAttribute( "color", getHLColor().name());
+    DEHighlight.setAttribute( "style", getHLSolid() ? "solid" : "outline");
 
     QDomElement DEAllowedDirections = doc.createElement("AllowedDirections");
     wordsearch.appendChild(DEAllowedDirections);

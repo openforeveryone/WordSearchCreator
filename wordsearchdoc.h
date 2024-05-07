@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2006-2023 M Wellings                                    *
+ *   Copyright (C) 2006-2024 M Wellings                                    *
  *   info@openforeveryone.co.uk                                            *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -45,7 +45,8 @@ public:
     QFont getWordsFont();
     QFont getCLFont();
     QColor getBGColor() {return bgColor;}
-    QColor getHLColor() {return hlColor;}
+    QColor getHLColor() {return hlColor;}    
+    bool getHLSolid() {return hlSolid;}
     QColor getWSColor() {return wsColor;}
     QColor getTitleColor() {return titleColor;}
     QColor getWLColor() {return wlColor;}
@@ -79,6 +80,7 @@ private:
     QFont WordsFont;
     QColor bgColor;
     QColor hlColor;
+    bool hlSolid;
     QColor titleColor;
     QColor wsColor;
     QColor wlColor;
@@ -115,6 +117,7 @@ public slots:
     void setWordsColor(QColor wlColor) {this->wlColor = wlColor;}
     void setBgColor(QColor bgColor) {this->bgColor = bgColor;}
     void setHlColor(QColor hlColor) {this->hlColor = hlColor;}
+    void setHlSolid(bool hlSolid) {this->hlSolid = hlSolid;}
     void setGridColor(QColor gridColor) {this->gridColor = gridColor;}
     void setGridWidth(double gridWidth) {this->gridWidth = gridWidth;}
     void setSize(int x, int y);

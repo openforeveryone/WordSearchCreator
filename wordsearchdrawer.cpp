@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2006-2023 M Wellings                                    *
+ *   Copyright (C) 2006-2024 M Wellings                                    *
  *   info@openforeveryone.co.uk                                            *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -25,6 +25,7 @@
 #include <QPainter>
 #include <QtMath>
 #include <QClipboard>
+#include <QDebug>
 
 #include "wordsearchdrawer.h"
 
@@ -471,43 +472,71 @@ void WordSearchDrawer::drawWordSearch(QPainter *painter)
     }
     QPen linepen;
     QColor linecolour(doc->getHLColor());
-    linecolour.setAlpha(150);
+    if (doc->getHLSolid())
+    {
+        linecolour.setAlpha(150);
+        linepen.setWidth(boxsize/2);
+        linepen.setCapStyle(Qt::RoundCap);
+    }
+    else
+    {
+        linecolour.setAlpha(255);
+        linepen.setWidth(boxsize/20);
+        linepen.setCapStyle(Qt::FlatCap);
+    }
     linepen.setColor(linecolour);
-    linepen.setWidth(boxsize/2);
-    linepen.setCapStyle(Qt::RoundCap);
     painter->setPen(linepen);
+    painter->setRenderHint(QPainter::Antialiasing);
     i = 0;
     while (i < doc->ws->wordlist.size())
     {
         if ((doc->getShowAnswers() && doc->ws->wordlist[i].used!=0) || doc->ws->wordlist[i].answered==true)
         {
-            int x1,y1,x2,y2;
+            int x1, y1, x2, y2;
             x1 = doc->ws->wordlist[i].xpos-1;
             y1 = doc->ws->wordlist[i].ypos-1;
             x2 = doc->ws->wordlist[i].expos-1;
             y2 = doc->ws->wordlist[i].eypos-1;
-            painter->drawLine(((boxsize/2)+boxsize*x1),((boxsize/2)+boxsize*y1),((boxsize/2)+boxsize*x2),((boxsize/2)+boxsize*y2));
-            if ((x1 == x2) && (y1 == y2))
-                painter->drawPoint(((boxsize/2)+boxsize*x1),((boxsize/2)+boxsize*y1));
+            drawAnswer(painter, x1, y1, x2, y2);
         }
         i++;
     }
     if (answering)
     {
-        QPen linepen;
-        QColor linecolour(0,0,255,150);
-        linepen.setColor(linecolour);
-        linepen.setWidth(boxsize/2);
-        linepen.setCapStyle(Qt::RoundCap);
-        painter->setPen(linepen);
-        int x1,y1,x2,y2;
+        int x1, y1, x2, y2;
         x1 = answerstart.x();
         y1 = answerstart.y();
         x2 = answerend.x();
         y2 = answerend.y();
-        painter->drawLine(((boxsize/2)+boxsize*x1),((boxsize/2)+boxsize*y1),((boxsize/2)+boxsize*x2),((boxsize/2)+boxsize*y2));
+        drawAnswer(painter, x1, y1, x2, y2);
+    }
+    painter->setRenderHint(QPainter::Antialiasing, false);
+}
+
+void WordSearchDrawer::drawAnswer(QPainter *painter, int x1, int y1, int x2, int y2)
+{
+    qreal boxsize = this->boxsize;
+    QPointF start(boxsize/2+boxsize*qreal(x1), boxsize/2+boxsize*qreal(y1));
+    QPointF end(boxsize/2+boxsize*qreal(x2), boxsize/2+boxsize*qreal(y2));
+    if (!doc->getHLSolid()){
+        qreal answerWidth_2 = 0.4;
+        qreal absAnswerWidth_2 = boxsize*answerWidth_2;
+        qreal angleRad = qAtan2(y2-y1, x2-x1);
+        qreal angle = angleRad / M_PI * 180;
+        QRectF startArcBoundingRect((boxsize/2-absAnswerWidth_2)+boxsize*x1, (boxsize/2-absAnswerWidth_2)+boxsize*y1, absAnswerWidth_2*2, absAnswerWidth_2*2);
+        QRectF endArcBoundingRect((boxsize/2-absAnswerWidth_2)+boxsize*x2, (boxsize/2-absAnswerWidth_2)+boxsize*y2, absAnswerWidth_2*2, absAnswerWidth_2*2);
+        painter->drawArc(startArcBoundingRect, (-angle+90)*16, 180*16);
+        painter->drawArc(endArcBoundingRect, (-angle-90)*16, 180*16);
+        painter->drawLine(QLineF(start.x() + cos(angleRad-M_PI_2)*absAnswerWidth_2, start.y() + sin(angleRad-M_PI_2)*absAnswerWidth_2,
+                                 end.x() + cos(angleRad-M_PI_2)*absAnswerWidth_2, end.y() + sin(angleRad-M_PI_2)*absAnswerWidth_2));
+        painter->drawLine(QLineF(start.x() + cos(angleRad+M_PI_2)*absAnswerWidth_2, start.y() + sin(angleRad+M_PI_2)*absAnswerWidth_2,
+                                 end.x() + cos(angleRad+M_PI_2)*absAnswerWidth_2, end.y() + sin(angleRad+M_PI_2)*absAnswerWidth_2));
+    }
+    else
+    {
+        painter->drawLine(start, end);
         if ((x1 == x2) && (y1 == y2))
-            painter->drawPoint(((boxsize/2)+boxsize*x1),((boxsize/2)+boxsize*y1));
+            painter->drawPoint(start);
     }
 }
 
