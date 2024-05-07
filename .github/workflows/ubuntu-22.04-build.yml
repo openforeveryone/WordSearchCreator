@@ -1,10 +1,7 @@
 name: Ubuntu 22.04 Build
 
 on:
-  push:
-    branches: [ "main" ]
-  pull_request:
-    branches: [ "main" ]
+  workflow_dispatch:
 
 jobs:
   build:
