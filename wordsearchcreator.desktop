@@ -1,6 +1,6 @@
 [Desktop Entry]
 Comment=Wisiwig word search worksheet creator.
-Exec=/usr/bin/wordsearchcreator
+Exec=/usr/bin/wordsearchcreator -platform xcb
 Icon=wordsearchcreator
 MimeType=application/wordsearch
 Name=Word Search Creator
