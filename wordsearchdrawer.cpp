@@ -271,7 +271,7 @@ QSize WordSearchDrawer::sizeHint() const
 {
     if (!viewMode)
         return QSize(wspwidth,wspheight)*scale;
-    else return QSize(logicalDpiX() * doc->pageWidth + 50, (logicalDpiY() * doc->pageHeight + 25) * getPageCount() + 50) * scale;
+    else return QSize(logicalDpiX() * doc->pageWidth + 50, (logicalDpiY() * doc->pageHeight + 25) * getPageCount() + 25) * scale;
 }
 
 void WordSearchDrawer::setScale(double scale)
