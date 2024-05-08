@@ -275,10 +275,10 @@ void WordSearchControl::UpdateConts()
     titlebox->setText(wsd->getTitle());
     WordListBox->document()->clear();
     QTextCursor newCursor(WordListBox->document());
-    QList<Word> sortedwordlist = wsd->sortedWordList();
-    for (int a=0; a < sortedwordlist.size(); a++)
+    QList<Word> wordList = wsd->fullWordList();
+    for (int a=0; a < wordList.size(); a++)
     {
-        newCursor.insertText(sortedwordlist.at(a).word);
+        newCursor.insertText(wordList.at(a).word);
         newCursor.insertBlock();
     }
     xspin->setValue(wsd->ws->XSize());
@@ -310,16 +310,16 @@ void WordSearchControl::showlistCreator()
 void WordSearchControl::showpageLayout()
 {
     PageLayoutDialog *pld = new PageLayoutDialog(this);
-    pld->setPageWidth(wsd->pagewidth);
-    pld->setPageHeight(wsd->pageheight);
+    pld->setPageWidth(wsd->pageWidth);
+    pld->setPageHeight(wsd->pageHeight);
     pld->setMarginTop(wsd->topMargin);
     pld->setMarginLeft(wsd->leftMargin);
     pld->setMarginRight(wsd->rightMargin);
     pld->setMarginBottom(wsd->bottomMargin);
     if (pld->exec())
     {
-        wsd->pagewidth = pld->PageWidth();
-        wsd->pageheight = pld->PageHeight();
+        wsd->pageWidth = pld->PageWidth();
+        wsd->pageHeight = pld->PageHeight();
         wsd->topMargin = pld->MarginTop();
         wsd->leftMargin = pld->MarginLeft();
         wsd->rightMargin = pld->MarginRight();

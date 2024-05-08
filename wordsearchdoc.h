@@ -57,8 +57,8 @@ public:
     QString getTitle();
     uint numwordsplaced();
     double topMargin, leftMargin, rightMargin, bottomMargin;
-    double pagewidth;
-    double pageheight;
+    double pageWidth;
+    double pageHeight;
     QPrinter::PageSize qpps;
     int Open(QString fileName);
     bool saveToIO(QIODevice &file);
@@ -72,7 +72,8 @@ public:
     ordertype wordlistorder;
     void setWordSpace (wordsearch::wordSpaceType wordSpace) {ws->wordSpace=wordSpace;}
     void clearAnswers();
-    QList<Word> sortedWordList();
+    QList<Word> sortedAnsweredWordList();
+    QList<Word> fullWordList();
 
 private:
     QFont WSFont;

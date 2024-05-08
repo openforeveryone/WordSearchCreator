@@ -51,17 +51,23 @@ void WordSearchDrawer::paintEvent(QPaintEvent *event)
     QPainter painter(this);
     painter.scale(scale,scale);
     if (viewMode) {
+        calcPageCount(&painter);
         //Draw the backgrounds and page outline
         painter.fillRect (0, 0, width()/scale+1, height()/scale+1, QColor(200,200,200));
-        painter.translate(20,20);
-        painter.fillRect (3, 3, painter.device()->logicalDpiX() * doc->pagewidth, painter.device()->logicalDpiY() * doc->pageheight, QColor(0, 0, 0));
-        painter.fillRect (0, 0, painter.device()->logicalDpiX() * doc->pagewidth, painter.device()->logicalDpiY() * doc->pageheight, doc->getBGColor());
-        QPen pen;
-        pen.setWidth(0);
-        painter.setPen(pen);
-        painter.drawRect (0, 0, painter.device()->logicalDpiX() * doc->pagewidth, painter.device()->logicalDpiY() * doc->pageheight);
+        for (int page = 1; page <= getPageCount(); page++)
+        {
+            painter.save();
+            painter.translate(20, (logicalDpiY() * doc->pageHeight + 25) * (page - 1) + 20);
+            painter.fillRect (3, 3, painter.device()->logicalDpiX() * doc->pageWidth, painter.device()->logicalDpiY() * doc->pageHeight, QColor(0, 0, 0));
+            painter.fillRect (0, 0, painter.device()->logicalDpiX() * doc->pageWidth, painter.device()->logicalDpiY() * doc->pageHeight, doc->getBGColor());
+            QPen pen;
+            pen.setWidth(0);
+            painter.setPen(pen);
+            painter.drawRect (0, 0, painter.device()->logicalDpiX() * doc->pageWidth, painter.device()->logicalDpiY() * doc->pageHeight);
 
-        drawWS(&painter, 0, 0, logicalDpiX() * doc->pagewidth - 0, logicalDpiY() * doc->pageheight + 0);
+            drawWorksheetPage(&painter, logicalDpiX() * doc->pageWidth - 0, logicalDpiY() * doc->pageHeight + 0, page);
+            painter.restore();
+        }
     }
     else {
         painter.setFont(doc->getWSFont());
@@ -79,136 +85,172 @@ void WordSearchDrawer::paintEvent(QPaintEvent *event)
     setMinimumSize(sizeHint());
 }
 
-void WordSearchDrawer::drawWS(QPainter *painter, int x, int y, int w, int h)
+void WordSearchDrawer::calcPageCount(QPainter *painter)
+{
+    int w = logicalDpiX() * doc->pageWidth;
+    int h = logicalDpiY() * doc->pageHeight;
+    int DpiX=painter->device()->logicalDpiX();
+    int DpiY=painter->device()->logicalDpiY();
+
+    w -= DpiX*doc->leftMargin + DpiX*doc->rightMargin;
+    h -= DpiY*doc->topMargin + DpiY*doc->bottomMargin;
+
+    QFont WordsFont = doc->getWordsFont();
+    painter->setFont(WordsFont);
+    int lineHeight = painter->fontMetrics().height();
+    painter->setFont(doc->getWSFont());
+    int boxsize = painter->fontMetrics().height();
+    int WordSearchPixelHeight = (boxsize * doc->ws->YSize())+1;
+    painter->setFont(doc->getTitleFont());
+    int yo;
+    pageCount = 1;
+    firstWordOnPage.clear();
+    uint wordsOnPreviousPages = 0;
+    if (doc->numwordsplaced() == 0)
+        return;
+    while (true)
+    {
+        if (pageCount == 1)
+        {
+            yo = painter->fontMetrics().height()*1.2;
+            yo += WordSearchPixelHeight;
+            painter->setFont(WordsFont);
+        }
+        else { yo = 0; }
+        int spaceHeightInLines = ((h-(yo)) / lineHeight)-1;
+        if (spaceHeightInLines < 1)
+        {
+            firstWordOnPage.append(wordsOnPreviousPages);
+            pageCount++;
+            continue;
+        }
+        int colWidth = 0;
+        for (uint a = 0; a < doc->ws->wordlist.size(); a++)
+        {
+            if (doc->ws->wordlist.at(a).used)
+                colWidth = qMax(colWidth,  painter->fontMetrics().width(doc->ws->wordlist.at(a).word));
+        }
+        colWidth += colWidth * 0.2;
+        uint maxCols = w / colWidth;
+        uint maxWordsOnThisPage = spaceHeightInLines * maxCols;
+        if (maxWordsOnThisPage >= doc->numwordsplaced() - wordsOnPreviousPages)
+        {
+            firstWordOnPage.append(doc->numwordsplaced() - wordsOnPreviousPages);
+            return;
+        }
+        wordsOnPreviousPages += maxWordsOnThisPage;
+        firstWordOnPage.append(wordsOnPreviousPages);
+        pageCount++;
+    }
+}
+
+void WordSearchDrawer::drawWorksheetPage(QPainter *painter, int w, int h, int pageNumber)
 {
     int xo, yo;
     painter->setFont(doc->getWSFont());
     int boxsize = painter->fontMetrics().height();
-    int WordSearchPixelwidth = (boxsize * doc->ws->XSize())+1;
-    int WordSearchPixelheight = (boxsize * doc->ws->YSize())+1;
+    int WordSearchPixelWidth = (boxsize * doc->ws->XSize())+1;
+    int WordSearchPixelHeight = (boxsize * doc->ws->YSize())+1;
     int DpiX=painter->device()->logicalDpiX();
     int DpiY=painter->device()->logicalDpiY();
 
     //margins
 
-    painter->translate(DpiX*doc->leftMargin,DpiY*doc->topMargin);
+    painter->translate(DpiX*doc->leftMargin, DpiY*doc->topMargin);
     w -= DpiX*doc->leftMargin + DpiX*doc->rightMargin;
     h -= DpiY*doc->topMargin + DpiY*doc->bottomMargin;
 
-    xo = ((w-WordSearchPixelwidth)/2)+x;
-    yo = y;
-    if (doc->getTitle()!="")
+    xo = ((w-WordSearchPixelWidth)/2);
+    yo = 0;
+    if (doc->getTitle()!="" && pageNumber==1)
     {
         painter->setFont(doc->getTitleFont());
         painter->setPen(doc->getTitleColor());
         painter->drawText(0, yo, w, painter->fontMetrics().height(), Qt::AlignCenter , doc->getTitle());
         yo += painter->fontMetrics().height()*1.2;
+    }    
+    if (pageNumber==1)
+    {
+        painter->save();
+        painter->translate(xo, yo);
+        drawWordSearch(painter);
+        Wordsarchpos = QPoint (xo+20+DpiX*doc->leftMargin, yo+20+DpiY*doc->topMargin);
+        painter->restore();
+        yo += WordSearchPixelHeight;
     }
     if (doc->getShowWords() && doc->numwordsplaced())
     {
         painter->setPen(doc->getWLColor());
         QFont WordsFont  = doc->getWordsFont();
-        painter->setFont(doc->getWordsFont());
-        int wordspercol = ((h-(yo+WordSearchPixelheight)) / painter->fontMetrics().height())-1;
-        if (wordspercol > 0)
+        painter->setFont(WordsFont);
+        int spaceHeightInLines = ((h-(yo)) / painter->fontMetrics().height())-1;
+        if (spaceHeightInLines > 0)
         {
-            uint colsneded = ceil(float (doc->numwordsplaced()) / float(wordspercol));
-            int colwidth = 0;
+            // Determine word list layout
+            int colWidth = 0;
             for (uint a = 0; a < doc->ws->wordlist.size(); a++)
             {
                 if (doc->ws->wordlist.at(a).used)
-                    colwidth=qMax(colwidth,  painter->fontMetrics().width(doc->ws->wordlist.at(a).word));
+                    colWidth = qMax(colWidth,  painter->fontMetrics().width(doc->ws->wordlist.at(a).word));
             }
-            colwidth += colwidth * 0.2;
-            uint maxcols = w / colwidth;
-            uint numcols=colsneded, bestspaceleft = 0;
-            for (uint a=colsneded; a < maxcols; a++)
+            colWidth += colWidth * 0.2;
+            uint maxCols = w / colWidth;
+            uint numcols;
+            if (pageCount == 1)
             {
-                uint spaceleft = ceil(float(doc->numwordsplaced())/float(a))*a-doc->numwordsplaced();
-                if (!(doc->numwordsplaced()%a))
-                    spaceleft = 0;
-                if (spaceleft < bestspaceleft)
+                // Find aesthetically pleasing number of columns by searching for the number of columns
+                // that leaves the least space in the last column.
+                uint minColsNeded = ceil(float (doc->numwordsplaced()) / float(spaceHeightInLines));
+                numcols = minColsNeded;
+                uint bestspaceleft = 0;
+                for (uint a=minColsNeded; a < maxCols; a++)
                 {
-                    numcols = a;
-                    bestspaceleft = spaceleft;
-                }
-            }
-            uint x = 0, y = 0;
-            int a = 0;
-//            doc->sortedwordlist.clear();
-//            while (a < doc->ws->wordlist.size())
-//            {
-//                doc->sortedwordlist.append(doc->ws->wordlist.at(a));
-//                a++;
-//            }
-//            a=0;
-//            if (doc->wordlistorder==WordSearchDoc::Alphabetical)
-//                while (a < doc->sortedwordlist.size()-1)
-//                {
-//                if ( QString::localeAwareCompare(doc->sortedwordlist.at(a).word,doc->sortedwordlist.at(a+1).word)>0)
-//                {
-//                    doc->sortedwordlist.move(a+1, a);
-//                    a=0;
-//                }
-//                else
-//                    a++;
-//            }
-//            if (doc->wordlistorder==WordSearchDoc::UserDefined)
-//                while (a < doc->sortedwordlist.size()-1)
-//                {
-//                if ( doc->sortedwordlist.at(a).listpos > doc->sortedwordlist.at(a+1).listpos)
-//                {
-//                    doc->sortedwordlist.move(a+1, a);
-//                    a=0;
-//                }
-//                else
-//                    a++;
-//            }
-//            if (doc->wordlistorder==WordSearchDoc::ReverseAlphabetical)
-//                while (a < doc->sortedwordlist.size()-1)
-//                {
-//                if ( QString::localeAwareCompare(doc->sortedwordlist.at(a).word,doc->sortedwordlist.at(a+1).word)<0)
-//                {
-//                    doc->sortedwordlist.move(a+1, a);
-//                    a=0;
-//                }
-//                else
-//                    a++;
-//            }
-//            if (doc->wordlistorder==WordSearchDoc::SizeDes)
-//                while (a < doc->sortedwordlist.size()-1)
-//                {
-//                if (doc->sortedwordlist.at(a).word.size()>doc->sortedwordlist.at(a+1).word.size())
-//                {
-//                    doc->sortedwordlist.move(a+1, a);
-//                    a=0;
-//                }
-//                else
-//                    a++;
-//            }
-            a=0;            
-            QList<Word> sortedwordlist = doc->sortedWordList();
-            while (a < sortedwordlist.size())
-            {
-                if (sortedwordlist.at(a).used)
-                {
-                    if (sortedwordlist.at(a).answered==true)
-                        WordsFont.setStrikeOut(true);
-                    else
-                        WordsFont.setStrikeOut(false);
-                    painter->setFont(WordsFont);
-                    painter->drawText((w-colwidth*numcols)/2+colwidth*x, (yo+WordSearchPixelheight)+( painter->fontMetrics().height()*(y+1)), colwidth, painter->fontMetrics().height(), Qt::AlignCenter, sortedwordlist.at(a).word);
-                    if (y < ceil(float(doc->numwordsplaced())/float(numcols))-1)
-                        y++;
-                    else
+                    uint spaceLeft = ceil(float(doc->numwordsplaced()) / float(a)) * a - doc->numwordsplaced();
+                    if (!(doc->numwordsplaced() % a))
+                        spaceLeft = 0;
+                    if (spaceLeft < bestspaceleft)
                     {
-                        y = 0;
-                        x++;
+                        numcols = a;
+                        bestspaceleft = spaceLeft;
                     }
                 }
-                a++;
+            }
+            else
+            {
+                numcols = maxCols;
+            }
+
+            // Draw word list
+            uint x = 0, y = 0;
+            uint firstWordOnThisPage = 0;
+            if (pageNumber > 1)
+                firstWordOnThisPage = firstWordOnPage.at(pageNumber-2);
+            QList<Word> wordList = doc->sortedAnsweredWordList();
+            int numWordsOnPage = min(maxCols * spaceHeightInLines, wordList.size() - firstWordOnThisPage);
+            for (uint a = firstWordOnThisPage; a < firstWordOnThisPage + numWordsOnPage; a++)
+            {
+                if (wordList.at(a).answered==true)
+                    WordsFont.setStrikeOut(true);
+                else
+                    WordsFont.setStrikeOut(false);
+                painter->setFont(WordsFont);
+                painter->drawText((w-colWidth*numcols)/2+colWidth*x, (yo)+( painter->fontMetrics().height()*(y+1)),
+                                  colWidth, painter->fontMetrics().height(), Qt::AlignCenter, wordList.at(a).word);
+                if (y < ceil(float(numWordsOnPage)/float(numcols))-1)
+                    y++;
+                else
+                {
+                    y = 0;
+                    x++;
+                }
             }
         }
+    }
+    if (getPageCount() > 1)
+    {
+        painter->setFont(doc->getCLFont());
+        QString pageNumberFooter = QString("Page %1 of %2").arg(pageNumber).arg(getPageCount());
+        painter->drawText(0, h , w, painter->fontMetrics().height(), Qt::AlignLeft, pageNumberFooter);
     }
     if (doc->getShowCreatorLabel())
     {
@@ -218,9 +260,6 @@ void WordSearchDrawer::drawWS(QPainter *painter, int x, int y, int w, int h)
             tempfooter = "Created with Word Search Creator from: WordSearchCreator.org";
         painter->drawText(0, h , w, painter->fontMetrics().height(), Qt::AlignRight, tempfooter);
     }
-    Wordsarchpos = QPoint (xo+20+DpiX*doc->leftMargin,yo+20+DpiY*doc->topMargin);
-    painter->translate(xo,yo);
-    drawWordSearch(painter);
 }
 
 void WordSearchDrawer::setAutoResize(int autosize)
@@ -232,7 +271,7 @@ QSize WordSearchDrawer::sizeHint() const
 {
     if (!viewMode)
         return QSize(wspwidth,wspheight)*scale;
-    else return QSize(logicalDpiX() * doc->pagewidth + 50, logicalDpiY() * doc->pageheight + 50)*scale;
+    else return QSize(logicalDpiX() * doc->pageWidth + 50, (logicalDpiY() * doc->pageHeight + 25) * getPageCount() + 50) * scale;
 }
 
 void WordSearchDrawer::setScale(double scale)
@@ -354,40 +393,51 @@ void WordSearchDrawer::clearPlayAnswers()
     }
 }
 
-void WordSearchDrawer::Print()
+void WordSearchDrawer::print(QPrinter *printer)
 {
-    QPrinter printer;
-    printer.setFullPage(true);
-    if (doc->qpps != QPrinter::Custom)
+    QPainter painter(printer);
+    for (int page = 1; page <= getPageCount(); page++)
     {
-        printer.setPageSize(doc->qpps);
-        if (doc->pagewidth>doc->pageheight)
-            printer.setOrientation(QPrinter::Landscape);
-    }
-    else
-        printer.setPaperSize(QSizeF(doc->pagewidth, doc->pageheight),QPrinter::Inch);
-    QPrintDialog printDialog(&printer, this);
-
-    if (printDialog.exec() == QDialog::Accepted) {
-        QPainter painter(&printer);
-        drawWS(&painter, 0, 0, printer.width(), printer.height());
+        painter.save();
+        drawWorksheetPage(&painter, printer->width(), printer->height(), page);
+        painter.restore();
+        if (page < getPageCount())
+            printer->newPage();
     }
 }
 
-void WordSearchDrawer::DPrint()
+void WordSearchDrawer::printWithDialog()
 {
     QPrinter printer;
     printer.setFullPage(true);
     if (doc->qpps != QPrinter::Custom)
     {
         printer.setPageSize(doc->qpps);
-        if (doc->pagewidth>doc->pageheight)
+        if (doc->pageWidth>doc->pageHeight)
             printer.setOrientation(QPrinter::Landscape);
     }
     else
-        printer.setPaperSize(QSizeF(doc->pagewidth, doc->pageheight),QPrinter::Inch);
-    QPainter painter(&printer);
-    drawWS(&painter, 0, 0, printer.width(), printer.height());
+        printer.setPaperSize(QSizeF(doc->pageWidth, doc->pageHeight),QPrinter::Inch);
+    QPrintDialog printDialog(&printer, this);
+
+    if (printDialog.exec() == QDialog::Accepted) {
+        print(&printer);
+    }
+}
+
+void WordSearchDrawer::printDirect()
+{
+    QPrinter printer;
+    printer.setFullPage(true);
+    if (doc->qpps != QPrinter::Custom)
+    {
+        printer.setPageSize(doc->qpps);
+        if (doc->pageWidth>doc->pageHeight)
+            printer.setOrientation(QPrinter::Landscape);
+    }
+    else
+        printer.setPaperSize(QSizeF(doc->pageWidth, doc->pageHeight),QPrinter::Inch);
+    print(&printer);
 }
 
 void WordSearchDrawer::Copy()
@@ -425,14 +475,12 @@ void WordSearchDrawer::PDF()
     if (doc->qpps != QPrinter::Custom)
     {
         printer.setPageSize(doc->qpps);
-        if (doc->pagewidth>doc->pageheight)
+        if (doc->pageWidth>doc->pageHeight)
             printer.setOrientation(QPrinter::Landscape);
     }
     else
-        printer.setPaperSize(QSizeF(doc->pagewidth, doc->pageheight),QPrinter::Inch);
-    QPainter painter(&printer);
-    //printer.setPageSize(QPrinter::A4);
-    drawWS(&painter, 0, 0, printer.width(),printer.height());
+        printer.setPaperSize(QSizeF(doc->pageWidth, doc->pageHeight),QPrinter::Inch);
+    print(&printer);
 }
 
 void WordSearchDrawer::drawWordSearch(QPainter *painter)

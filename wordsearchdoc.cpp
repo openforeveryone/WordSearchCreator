@@ -42,7 +42,7 @@ WordSearchDoc::WordSearchDoc(QWidget *parent)
     edited=false;
     sortmethod = 2;
     gridWidth=0.02;
-    topMargin = 0.5; leftMargin = 0.5; rightMargin = 0.5; bottomMargin = 0.5; pageheight = 11.69; pagewidth = 8.26;
+    topMargin = 0.5; leftMargin = 0.5; rightMargin = 0.5; bottomMargin = 0.5; pageHeight = 11.69; pageWidth = 8.26;
     filename = "";
     wordlistorder=UserDefined;
     bgColor=Qt::white;
@@ -509,8 +509,8 @@ int WordSearchDoc::OpenFromIO(QIODevice &file)
         rightMargin = pagelayout.attribute( "RightMargin", "0.5").toDouble();
         topMargin = pagelayout.attribute( "TopMargin", "0.5").toDouble();
         bottomMargin = pagelayout.attribute( "BottomMargin", "0.5").toDouble();
-        pageheight = pagelayout.attribute( "Height", "11.69").toDouble();
-        pagewidth = pagelayout.attribute( "Width", "8.26").toDouble();
+        pageHeight = pagelayout.attribute( "Height", "11.69").toDouble();
+        pageWidth = pagelayout.attribute( "Width", "8.26").toDouble();
         
         QDomElement DEfooter = worksheet.firstChildElement("Footer");
         footer = DEfooter.text();
@@ -556,8 +556,8 @@ bool WordSearchDoc::saveToIO(QIODevice &file){
     pagelayout.setAttribute( "RightMargin", rightMargin);
     pagelayout.setAttribute( "TopMargin", topMargin);
     pagelayout.setAttribute( "BottomMargin",bottomMargin);
-    pagelayout.setAttribute( "Height", pageheight);
-    pagelayout.setAttribute( "Width", pagewidth);
+    pagelayout.setAttribute( "Height", pageHeight);
+    pagelayout.setAttribute( "Width", pageWidth);
     
     QDomElement wordsearch = doc.createElement("Wordsearch");
     worksheet.appendChild(wordsearch);
@@ -718,13 +718,14 @@ bool WordSearchDoc::saveToIO(QIODevice &file){
     return true;
 }
 
-QList<Word> WordSearchDoc::sortedWordList()
+QList<Word> WordSearchDoc::sortedAnsweredWordList()
 {
     int a = 0;
     QList<Word> sortedwordlist;
     while (a < int(ws->wordlist.size()))
     {
-        sortedwordlist.append(ws->wordlist.at(a));
+        if (ws->wordlist.at(a).used)
+            sortedwordlist.append(ws->wordlist.at(a));
         a++;
     }
     a=0;
@@ -773,6 +774,28 @@ QList<Word> WordSearchDoc::sortedWordList()
                 a++;
         }
     return sortedwordlist;
+}
+
+QList<Word> WordSearchDoc::fullWordList() {
+    QList<Word> sortedWordlist;
+    int a = 0;
+    while (a < int(ws->wordlist.size()))
+    {
+        sortedWordlist.append(ws->wordlist.at(a));
+        a++;
+    }
+    a = 0;
+    while (a < sortedWordlist.size()-1)
+    {
+        if ( sortedWordlist.at(a).listpos > sortedWordlist.at(a+1).listpos)
+        {
+            sortedWordlist.move(a+1, a);
+            a=0;
+        }
+        else
+            a++;
+    }
+    return sortedWordlist;
 }
 
 

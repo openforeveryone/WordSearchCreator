@@ -33,6 +33,7 @@ public:
     WordSearchDrawer(WordSearchDoc *doc, QWidget *parent = 0);
     WordSearchDoc *doc;
     QSize sizeHint() const;
+    int getPageCount() const {return pageCount;}
 
 protected:
     void paintEvent(QPaintEvent *event);
@@ -43,9 +44,10 @@ protected:
 
 private:
     bool viewMode;
-    void drawWS(QPainter *painter, int x, int y, int w, int h);
+    void drawWorksheetPage(QPainter *painter, int w, int h, int pageNumber);
     void drawWordSearch(QPainter *painter);
     void drawAnswer(QPainter *painter, int x1, int y1, int x2, int y2);
+    void calcPageCount(QPainter *painter);
     double scale;
     int wspwidth;
     int wspheight;
@@ -57,10 +59,13 @@ private:
     bool mousemoved;
     bool allowPlay;
     QTime stopwatch;
+    int pageCount;
+    QList<uint> firstWordOnPage;
 
 public slots:
-    void Print();
-    void DPrint();
+    void print(QPrinter *printer);
+    void printWithDialog();
+    void printDirect();
     void PDF();
     void setAutoResize(int autosize);
     bool ShowAnswers() {return doc->ShowAnswers();}

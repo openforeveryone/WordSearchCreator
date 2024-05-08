@@ -87,12 +87,12 @@ void MainWindow::SetupWindow()
     PrintAct->setStatusTip(tr("Print Worksheet..."));
     PrintAct->setIcon(QIcon(":/icons/fileprint.png"));
     PrintAct->setIconText("Print");
-    connect(PrintAct, SIGNAL(triggered()), wsdraw, SLOT(Print()));
+    connect(PrintAct, SIGNAL(triggered()), wsdraw, SLOT(printWithDialog()));
     QAction *DPrintAct = new QAction(tr("Print Worksheet Directly..."), this);
     DPrintAct->setStatusTip(tr("Print Worksheet Directly"));
     DPrintAct->setIcon(QIcon(":/icons/fileprint.png"));
     DPrintAct->setIconText("Print");
-    connect(DPrintAct, SIGNAL(triggered()), wsdraw, SLOT(DPrint()));
+    connect(DPrintAct, SIGNAL(triggered()), wsdraw, SLOT(printDirect()));
     QAction *quitAct = new QAction(tr("&Quit"), this);
     quitAct->setShortcut(tr("Ctrl+Q"));
     quitAct->setStatusTip(tr("Quit"));
