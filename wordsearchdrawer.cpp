@@ -128,7 +128,7 @@ void WordSearchDrawer::calcPageCount(QPainter *painter)
         for (uint a = 0; a < doc->ws->wordlist.size(); a++)
         {
             if (doc->ws->wordlist.at(a).used)
-                colWidth = qMax(colWidth,  painter->fontMetrics().width(doc->ws->wordlist.at(a).word));
+                colWidth = qMax(colWidth, painter->fontMetrics().width(doc->ws->wordlist.at(a).word));
         }
         colWidth += colWidth * 0.2;
         uint maxCols = w / colWidth;
@@ -225,7 +225,7 @@ void WordSearchDrawer::drawWorksheetPage(QPainter *painter, int w, int h, int pa
             uint firstWordOnThisPage = 0;
             if (pageNumber > 1)
                 firstWordOnThisPage = firstWordOnPage.at(pageNumber-2);
-            QList<Word> wordList = doc->sortedAnsweredWordList();
+            QList<Word> wordList = doc->sortedUsedWordList();
             int numWordsOnPage = min(maxCols * spaceHeightInLines, wordList.size() - firstWordOnThisPage);
             for (uint a = firstWordOnThisPage; a < firstWordOnThisPage + numWordsOnPage; a++)
             {

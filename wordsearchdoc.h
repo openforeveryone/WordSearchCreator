@@ -72,7 +72,7 @@ public:
     ordertype wordlistorder;
     void setWordSpace (wordsearch::wordSpaceType wordSpace) {ws->wordSpace=wordSpace;}
     void clearAnswers();
-    QList<Word> sortedAnsweredWordList();
+    QList<Word> sortedUsedWordList();
     QList<Word> fullWordList();
 
 private:

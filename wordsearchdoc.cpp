@@ -718,7 +718,7 @@ bool WordSearchDoc::saveToIO(QIODevice &file){
     return true;
 }
 
-QList<Word> WordSearchDoc::sortedAnsweredWordList()
+QList<Word> WordSearchDoc::sortedUsedWordList()
 {
     int a = 0;
     QList<Word> sortedwordlist;
