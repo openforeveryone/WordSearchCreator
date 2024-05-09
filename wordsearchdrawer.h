@@ -44,8 +44,8 @@ protected:
 
 private:
     bool viewMode;
-    void drawWorksheetPage(QPainter *painter, int w, int h, int pageNumber);
-    void drawWordSearch(QPainter *painter);
+    void drawWorksheetPage(QPainter *painter, int w, int h, int pageNumber, bool screen);
+    void drawWordSearch(QPainter *painter, bool screen);
     void drawAnswer(QPainter *painter, int x1, int y1, int x2, int y2);
     void calcPageCount(QPainter *painter);
     double scale;

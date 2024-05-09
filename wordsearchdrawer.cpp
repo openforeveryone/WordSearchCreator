@@ -65,7 +65,7 @@ void WordSearchDrawer::paintEvent(QPaintEvent *event)
             painter.setPen(pen);
             painter.drawRect (0, 0, painter.device()->logicalDpiX() * doc->pageWidth, painter.device()->logicalDpiY() * doc->pageHeight);
 
-            drawWorksheetPage(&painter, logicalDpiX() * doc->pageWidth - 0, logicalDpiY() * doc->pageHeight + 0, page);
+            drawWorksheetPage(&painter, logicalDpiX() * doc->pageWidth - 0, logicalDpiY() * doc->pageHeight + 0, page, true);
             painter.restore();
         }
     }
@@ -80,7 +80,7 @@ void WordSearchDrawer::paintEvent(QPaintEvent *event)
         Wordsarchpos = QPoint(xo,yo);
         painter.fillRect (0, 0, width()/scale+1, height()/scale+1, doc->getBGColor());
         painter.translate(xo,yo);
-        drawWordSearch(&painter);
+        drawWordSearch(&painter, true);
     }
     setMinimumSize(sizeHint());
 }
@@ -144,7 +144,7 @@ void WordSearchDrawer::calcPageCount(QPainter *painter)
     }
 }
 
-void WordSearchDrawer::drawWorksheetPage(QPainter *painter, int w, int h, int pageNumber)
+void WordSearchDrawer::drawWorksheetPage(QPainter *painter, int w, int h, int pageNumber, bool screen)
 {
     int xo, yo;
     painter->setFont(doc->getWSFont());
@@ -173,7 +173,7 @@ void WordSearchDrawer::drawWorksheetPage(QPainter *painter, int w, int h, int pa
     {
         painter->save();
         painter->translate(xo, yo);
-        drawWordSearch(painter);
+        drawWordSearch(painter, screen);
         Wordsarchpos = QPoint (xo+20+DpiX*doc->leftMargin, yo+20+DpiY*doc->topMargin);
         painter->restore();
         yo += WordSearchPixelHeight;
@@ -399,7 +399,7 @@ void WordSearchDrawer::print(QPrinter *printer)
     for (int page = 1; page <= getPageCount(); page++)
     {
         painter.save();
-        drawWorksheetPage(&painter, printer->width(), printer->height(), page);
+        drawWorksheetPage(&painter, printer->width(), printer->height(), page, false);
         painter.restore();
         if (page < getPageCount())
             printer->newPage();
@@ -451,7 +451,7 @@ void WordSearchDrawer::Copy()
     QPixmap wsimage(WordSearchPixelwidth,WordSearchPixelheight);
     QPainter painter(&wsimage);
     painter.fillRect (0, 0, wsimage.width(), wsimage.height(), QColor(255,255,255));
-    drawWordSearch(&painter);
+    drawWordSearch(&painter, true);
     QClipboard *clipboard = QApplication::clipboard();
     clipboard->setPixmap(wsimage);
 }
@@ -483,7 +483,7 @@ void WordSearchDrawer::PDF()
     print(&printer);
 }
 
-void WordSearchDrawer::drawWordSearch(QPainter *painter)
+void WordSearchDrawer::drawWordSearch(QPainter *painter, bool screen)
 {
     QChar letter;
     int xsize = doc->ws->XSize();
@@ -494,10 +494,17 @@ void WordSearchDrawer::drawWordSearch(QPainter *painter)
     boxsize = painter->fontMetrics().height();
     QPen boxpen;
     boxpen.setColor(doc->getGridColor());
-    double gridPixleWidth = doc->getGridWidth()*DpiX;
-    if (gridPixleWidth*scale < 2)
-        gridPixleWidth = 0;
-    boxpen.setWidth(gridPixleWidth);
+    qreal gridPixleWidth;
+    if (screen)
+    {
+        gridPixleWidth = doc->getGridWidth() * DpiX;
+        if (gridPixleWidth*scale < 2)
+            gridPixleWidth = 0;
+    } else {
+        gridPixleWidth = qMax(doc->getGridWidth(), 1.0/300.0) * DpiX;
+    }
+    boxpen.setWidthF(gridPixleWidth);
+    boxpen.setJoinStyle(Qt::MiterJoin);
     QPen wsPen;
     wsPen.setColor(doc->getWSColor());
     for (int x = 0; x < xsize; x++)
@@ -603,5 +610,5 @@ void WordSearchDrawer::SVG()
     QSvgGenerator svg;
     svg.setFileName(fileName);
     QPainter painter(&svg);
-    drawWordSearch(&painter);
+    drawWordSearch(&painter, false);
 }
