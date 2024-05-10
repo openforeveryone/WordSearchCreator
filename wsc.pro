@@ -51,6 +51,7 @@ RC_FILE = wsc.rc
 HEADERS += appearancedialog.h \
     directionselector.h \
     directionselectordialogue.h \
+    footerdialog.h \
     listcreator.h \
     mainwindow.h \
     maskdialogue.h \
@@ -65,6 +66,7 @@ HEADERS += appearancedialog.h \
     updatechecker.h \
     preferencesdialog.h
 FORMS += appearance.ui \
+    footer.ui \
     listcreator.ui \
     pagelayout.ui \
     alphabet.ui \
@@ -73,6 +75,7 @@ FORMS += appearance.ui \
 SOURCES += appearancedialog.cpp \
     directionselector.cpp \
     directionselectordialogue.cpp \
+    footerdialog.cpp \
     listcreator.cpp \
     main.cpp \
     mainwindow.cpp \

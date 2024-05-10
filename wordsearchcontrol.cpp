@@ -32,6 +32,7 @@
 #include "maskdialogue.h"
 #include "pagelayoutdialogue.h"
 #include "alphabetdialogue.h"
+#include "footerdialog.h"
 #include "mainwindow.h"
 
 #include "wordsearchcontrol.h"
@@ -223,18 +224,21 @@ void WordSearchControl::appearance()
 {
     appearanceDialog *apd = new appearanceDialog(this);
     apd->setDoc(wsd);
+    apd->setAttribute(Qt::WA_DeleteOnClose);
     apd->exec();
 }
 
 void WordSearchControl::showdirectionselector()
 {
     DirectionSelectorDialog *ds = new DirectionSelectorDialog(wsd->ws, this);
+    ds->setAttribute(Qt::WA_DeleteOnClose);
     ds->exec();
 }
 
 void WordSearchControl::showmaskdrawer()
 {
     MaskDialog *md = new MaskDialog(wsd, this);
+    md->setAttribute(Qt::WA_DeleteOnClose);
     md->exec();
 }
 
@@ -381,19 +385,16 @@ void WordSearchControl::alphabet()
 {
     AlphabetDialog *abd = new AlphabetDialog(this);
     abd->setDoc(wsd);
+    abd->setAttribute(Qt::WA_DeleteOnClose);
     abd->exec();
 }
 
 void WordSearchControl::setFooter()
 {
-    bool ok;
-    QString text = QInputDialog::getText(this, tr("Word Search Creator"),
-                                         tr("Footer"), QLineEdit::Normal,
-                                         wsd->getFooter(), &ok);
-    if (ok)
-        wsd->setFooter(text);
-    if (text=="")
-        wsd->setFooter(QString());
+    footerdialog *fd = new footerdialog(this);
+    fd->setDoc(wsd);
+    fd->setAttribute(Qt::WA_DeleteOnClose);
+    fd->exec();
 }
 
 

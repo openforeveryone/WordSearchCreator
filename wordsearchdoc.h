@@ -74,6 +74,10 @@ public:
     void clearAnswers();
     QList<Word> sortedUsedWordList();
     QList<Word> fullWordList();
+    enum showPageNumberType {PageNumberNever, PageNumberAlways, PageNumberMultipage};
+    showPageNumberType getShowPageNumber() {return showPageNumber;}
+    bool getShowPageCount() {return showPageCount;}
+    static QString getDefaultFooter() {return "Created with Word Search Creator from: WordSearchCreator.org";}
 
 private:
     QFont WSFont;
@@ -101,6 +105,8 @@ private:
     int sortmethod;
     int boxsize;
     QString footer;
+    showPageNumberType showPageNumber;
+    bool showPageCount;
 
 public slots:
     void setWSFont(QFont WSFont);
@@ -131,6 +137,8 @@ public slots:
     void setTitle(QString Title);
     void setEditedState(bool edited);
     void setFooter(QString footer) {this->footer = footer; setEditedState(true);}
+    void setShowPageNumber(showPageNumberType showPageNumber) {this->showPageNumber = showPageNumber;}
+    void setShowPageCount(bool showPageCount) {this->showPageCount = showPageCount;}
     int OpenFromIO(QIODevice &file);
 
 signals:

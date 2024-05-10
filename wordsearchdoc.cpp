@@ -48,6 +48,8 @@ WordSearchDoc::WordSearchDoc(QWidget *parent)
     bgColor=Qt::white;
     hlColor=Qt::blue;
     hlSolid=true;
+    showPageNumber = showPageNumberType::PageNumberMultipage;
+    showPageCount = true;
 }
 
 void WordSearchDoc::Create()
@@ -515,6 +517,22 @@ int WordSearchDoc::OpenFromIO(QIODevice &file)
         QDomElement DEfooter = worksheet.firstChildElement("Footer");
         footer = DEfooter.text();
         
+        QDomElement DEPageNumbers = worksheet.firstChildElement("PageNumbers");
+        QStringList showPageNumberOptions;
+        showPageNumberOptions.append("NeverShow");
+        showPageNumberOptions.append("AlwaysShow");
+        showPageNumberOptions.append( "ShowWhenMultipage");
+        QString showPageNumberAttr = DEPageNumbers.attribute("ShowPageNumbers");
+        if (showPageNumberAttr == "NeverShow")
+            this->showPageNumber = PageNumberNever;
+        else if (showPageNumberAttr == "AlwaysShow")
+            this->showPageNumber = PageNumberAlways;
+        else
+            this->showPageNumber = PageNumberMultipage;
+        QString showPageCountAttr = DEPageNumbers.attribute("ShowPageCount");
+        this->showPageCount= !(showPageCountAttr == "false");
+
+
         //fill sortedwordlist in "UserDefined" order for wsc to populate the textbox
         //        int a=0;
         //        this->sortedwordlist.clear();
@@ -712,6 +730,17 @@ bool WordSearchDoc::saveToIO(QIODevice &file){
         QDomText DTfooter = doc.createTextNode(this->footer);
         DEfooter.appendChild(DTfooter);
     }
+
+
+    QDomElement pageNumbers = doc.createElement("PageNumbers");
+    worksheet.appendChild(pageNumbers);
+    QStringList showPageNumberOptions;
+    showPageNumberOptions.append("NeverShow");
+    showPageNumberOptions.append("AlwaysShow");
+    showPageNumberOptions.append( "ShowWhenMultipage");
+    pageNumbers.setAttribute( "ShowPageNumbers", showPageNumberOptions.at(getShowPageNumber()));
+    pageNumbers.setAttribute( "ShowPageCount", getShowPageCount() ? "true" : "false");
+
     out << "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n";
     out << doc.toString();
     //qDebug() << doc.toString();

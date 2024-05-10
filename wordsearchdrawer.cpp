@@ -246,19 +246,24 @@ void WordSearchDrawer::drawWorksheetPage(QPainter *painter, int w, int h, int pa
             }
         }
     }
-    if (getPageCount() > 1)
+    if (doc->getShowPageNumber() == WordSearchDoc::PageNumberAlways
+            || (doc->getShowPageNumber() == WordSearchDoc::PageNumberMultipage && getPageCount() > 1))
     {
         painter->setFont(doc->getCLFont());
-        QString pageNumberFooter = QString("Page %1 of %2").arg(pageNumber).arg(getPageCount());
+        QString pageNumberFooter;
+        if (doc->getShowPageCount())
+            pageNumberFooter = QString("Page %1 of %2").arg(pageNumber).arg(getPageCount());
+        else
+            pageNumberFooter = QString("Page %1").arg(pageNumber);
         painter->drawText(0, h , w, painter->fontMetrics().height(), Qt::AlignLeft, pageNumberFooter);
     }
     if (doc->getShowCreatorLabel())
     {
         painter->setFont(doc->getCLFont());
-        QString tempfooter = doc->getFooter();
-        if (tempfooter.isNull())
-            tempfooter = "Created with Word Search Creator from: WordSearchCreator.org";
-        painter->drawText(0, h , w, painter->fontMetrics().height(), Qt::AlignRight, tempfooter);
+        QString footerText = doc->getFooter();
+        if (footerText.isNull())
+            footerText = WordSearchDoc::getDefaultFooter();
+        painter->drawText(0, h , w, painter->fontMetrics().height(), Qt::AlignRight, footerText);
     }
 }
 

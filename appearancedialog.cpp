@@ -20,7 +20,7 @@
 #include <QFontDialog>
 #include <QColorDialog>
 
-#include "wordsearchdrawer.h"
+#include "wordsearchdoc.h"
 
 #include "appearancedialog.h"
 

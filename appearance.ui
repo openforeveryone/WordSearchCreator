@@ -6,14 +6,14 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>445</width>
-    <height>348</height>
+    <width>538</width>
+    <height>358</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Fonts and Colours - Word Search Creator</string>
   </property>
-  <layout class="QVBoxLayout" name="verticalLayout">
+  <layout class="QVBoxLayout" name="_2">
    <item>
     <layout class="QGridLayout">
      <property name="leftMargin">
