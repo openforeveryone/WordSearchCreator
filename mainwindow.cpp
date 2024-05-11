@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2006-2023 M Wellings                                    *
+ *   Copyright (C) 2006-2024 M Wellings                                    *
  *   info@openforeveryone.co.uk                                            *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -200,39 +200,53 @@ void MainWindow::SetupWindow()
     QAction *listorderAOAct = new QAction(tr("Original order"), this);
     listorderAOAct->setCheckable(true);
     listorderAOAct->setActionGroup(listorderGroup);
-    listorderAOAct->setChecked(true);
-    listorderAOAct->setData(0);
+    listorderAOAct->setData(0);    
+    if (wsdoc->wordlistorder == WordSearchDoc::UserDefined)
+        listorderAOAct->setChecked(true);
     QAction *listorderAAAct = new QAction(tr("Alphabetical"), this);
     listorderAAAct->setCheckable(true);
     listorderAAAct->setActionGroup(listorderGroup);
     listorderAAAct->setData(1);
+    if (wsdoc->wordlistorder == WordSearchDoc::Alphabetical)
+        listorderAAAct->setChecked(true);
     QAction *listorderADAct = new QAction(tr("Reverse Alphabetical"), this);
     listorderADAct->setCheckable(true);
     listorderADAct->setActionGroup(listorderGroup);
     listorderADAct->setData(2);
+    if (wsdoc->wordlistorder == WordSearchDoc::ReverseAlphabetical)
+        listorderADAct->setChecked(true);
     QAction *listorderLDAct = new QAction(tr("Word Length (Des)"), this);
     listorderLDAct->setCheckable(true);
     listorderLDAct->setActionGroup(listorderGroup);
     listorderLDAct->setData(3);
+    if (wsdoc->wordlistorder == WordSearchDoc::SizeDes)
+        listorderLDAct->setChecked(true);
     QAction *listorderLAAct = new QAction(tr("Word Length (Asc)"), this);
     listorderLAAct->setCheckable(true);
     listorderLAAct->setActionGroup(listorderGroup);
     listorderLAAct->setData(4);
+    if (wsdoc->wordlistorder == WordSearchDoc::SizeAsc)
+        listorderLAAct->setChecked(true);
     QActionGroup *wordSpaceGroup = new QActionGroup(this);
     connect(wordSpaceGroup, SIGNAL(triggered(QAction*)), this, SLOT(changeWordSpace(QAction*)));
     QAction *wordSpaceFSAct = new QAction(tr("Fill Space"), this);
     wordSpaceFSAct->setCheckable(true);
     wordSpaceFSAct->setActionGroup(wordSpaceGroup);
-    wordSpaceFSAct->setChecked(true);
     wordSpaceFSAct->setData(0);
+    if (wsdoc->ws->wordSpace == wordsearch::FillSpace)
+        wordSpaceFSAct->setChecked(true);
     QAction *wordSpaceRSAct = new QAction(tr("Remove Space"), this);
     wordSpaceRSAct->setCheckable(true);
     wordSpaceRSAct->setActionGroup(wordSpaceGroup);
     wordSpaceRSAct->setData(1);
+    if (wsdoc->ws->wordSpace == wordsearch::RemoveSpace)
+        wordSpaceRSAct->setChecked(true);
     QAction *wordSpaceKSAct = new QAction(tr("Keep Space"), this);
     wordSpaceKSAct->setCheckable(true);
     wordSpaceKSAct->setActionGroup(wordSpaceGroup);
     wordSpaceKSAct->setData(2);
+    if (wsdoc->ws->wordSpace == wordsearch::KeepSpace)
+        wordSpaceKSAct->setChecked(true);
     QMenu *fileMenu = menuBar()->addMenu(tr("&File"));
     QMenu *viewMenu = menuBar()->addMenu(tr("&View"));
     QMenu *formatMenu = menuBar()->addMenu(tr("&Format"));

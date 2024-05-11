@@ -454,12 +454,12 @@ int WordSearchDoc::OpenFromIO(QIODevice &file)
         wordSpaceLabels.append("KeepSpace");
         QDomElement DEWords = wordsearch.firstChildElement("Words");
         if (DEWords.attributes().contains("Order"))
-        {
-
-        }
+            wordlistorder = (WordSearchDoc::ordertype)orders.indexOf(DEWords.attribute("Order"));
         if (DEWords.attributes().contains("SpaceBehaviour"))
         {
-
+            QString SpaceBehaviourAttr = DEWords.attribute("SpaceBehaviour");
+            auto indexof = wordSpaceLabels.indexOf(SpaceBehaviourAttr);
+            ws->wordSpace = (wordsearch::wordSpaceType)indexof;
         }
 
         QDomNodeList DEWordList = DEWords.elementsByTagName("Word");
