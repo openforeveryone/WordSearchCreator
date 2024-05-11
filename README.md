@@ -14,6 +14,11 @@ Please refer to [INSTALL](INSTALL) file
 
 ## Changes:
 
+### Version 1.3:
+* Word list now flows onto multiple pages if too large for one.
+* Answers can be drawn as outlines.
+* Various bug fixes.
+
 ### Version 1.2.1:
 * Minor bug fixes
 
