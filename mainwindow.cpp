@@ -52,7 +52,7 @@ MainWindow::MainWindow(WordSearchDoc *wsdoc, QWidget *parent)
     SetupWindow();
     wsc->setWordSearchDoc(this->wsdoc);
     if (wsdoc==0)
-    wsc->SetupTemplate();
+        wsc->SetupTemplate();
     uint i = 0;
     while (i < this->wsdoc->ws->wordlist.size())
     {

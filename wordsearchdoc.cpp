@@ -331,25 +331,6 @@ int WordSearchDoc::OpenFromIO(QIODevice &file)
                 ws->allowLetter(mc, a, b);
             }
         }
-        //fill sortedwordlist in "UserDefined" order for wsc to populate the textbox
-        //        int a=0;
-        //        this->sortedwordlist.clear();
-        //        while (a < this->ws->wordlist.size())
-        //        {
-        //            this->sortedwordlist.append(this->ws->wordlist.at(a));
-        //            a++;
-        //        }
-        //        a=0;
-        //        while (a < this->sortedwordlist.size()-1)
-        //        {
-        //            if ( this->sortedwordlist.at(a).listpos > this->sortedwordlist.at(a+1).listpos)
-        //            {
-        //                this->sortedwordlist.move(a+1, a);
-        //                a=0;
-        //            }
-        //            else
-        //                a++;
-        //        }
         file.close();
     }
     else
@@ -531,28 +512,6 @@ int WordSearchDoc::OpenFromIO(QIODevice &file)
             this->showPageNumber = PageNumberMultipage;
         QString showPageCountAttr = DEPageNumbers.attribute("ShowPageCount");
         this->showPageCount= !(showPageCountAttr == "false");
-
-
-        //fill sortedwordlist in "UserDefined" order for wsc to populate the textbox
-        //        int a=0;
-        //        this->sortedwordlist.clear();
-        //        while (a < this->ws->wordlist.size())
-        //        {
-        //            this->sortedwordlist.append(this->ws->wordlist.at(a));
-        //            a++;
-        //        }
-        //        a=0;
-        //        while (a < this->sortedwordlist.size()-1)
-        //        {
-        //            if ( this->sortedwordlist.at(a).listpos > this->sortedwordlist.at(a+1).listpos)
-        //            {
-        //                this->sortedwordlist.move(a+1, a);
-        //                a=0;
-        //            }
-        //            else
-        //                a++;
-        //        }
-
     }
     setEditedState(false);
     return 0;

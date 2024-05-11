@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2006-2023 M Wellings                                    *
+ *   Copyright (C) 2006-2024 M Wellings                                    *
  *   info@openforeveryone.co.uk                                            *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -285,6 +285,7 @@ void WordSearchControl::UpdateConts()
         newCursor.insertText(wordList.at(a).word);
         newCursor.insertBlock();
     }
+    WordListBox->document()->clearUndoRedoStacks();
     xspin->setValue(wsd->ws->XSize());
     yspin->setValue(wsd->ws->YSize());
     titlebox->setText(wsd->getTitle());
