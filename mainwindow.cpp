@@ -427,7 +427,7 @@ bool MainWindow::event(QEvent *event)
 void MainWindow::ShowDoc()
 {
     //LaunchBrowserDialog::launchBrowser(QUrl("http://openforschools.co.uk/wordsearchcreator/doc/"));
-    QDesktopServices::openUrl(QUrl("http://wordsearchcreator.org/doc/1.2"));
+    QDesktopServices::openUrl(QUrl(QString("http://wordsearchcreator.org/doc/").append(UpdateChecker::getVersion())));
 }
 
 void MainWindow::CheckUpdate()
