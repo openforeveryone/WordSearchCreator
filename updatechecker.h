@@ -32,7 +32,7 @@ class UpdateChecker : public QObject
 public:
     explicit UpdateChecker(QObject *parent = 0);
     void checkForUpdate(bool manual);
-    static QString getVersion() {return "1.4";}
+    static QString getVersion() {return "1.3";}
 
 private:
     QNetworkAccessManager *manager;
