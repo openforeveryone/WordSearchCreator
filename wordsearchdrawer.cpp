@@ -112,7 +112,8 @@ void WordSearchDrawer::calcPageCount(QPainter *painter)
     {
         if (pageCount == 1)
         {
-            yo = painter->fontMetrics().height()*1.2;
+            if (doc->getTitle()!="")
+                yo = painter->fontMetrics().height()*1.2;
             yo += WordSearchPixelHeight;
             painter->setFont(WordsFont);
         }
