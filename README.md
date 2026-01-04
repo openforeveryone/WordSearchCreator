@@ -55,5 +55,4 @@ Please refer to [INSTALL](INSTALL) file
 * Below is a list of things that are currently lined up to be done:
 * Improve file format (fonts).
 * Improve shape mask designer.
-* Allow word list to spread over multiple pages.
 * Allow words to be placed in predefined places.
